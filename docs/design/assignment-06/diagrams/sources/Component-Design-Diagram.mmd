@@ -1,0 +1,40 @@
+flowchart TB
+    subgraph UIComponents["User Interface Components (React Frontend)"]
+        C1["<<component>>\nStudent Web Interface"]
+        C2["<<component>>\nHostel Authority Interface"]
+        C3["<<component>>\nMaintenance Staff Interface"]
+        C4["<<component>>\nAdministrator Interface"]
+        C5["<<component>>\nInstitute Management Interface"]
+    end
+
+    subgraph CoreServices["Backend Services Subsystem (Express Engine)"]
+        C_Auth["<<component>>\nAuthentication & Authorization Service"]
+        C_Complaint["<<component>>\nComplaint Management Service"]
+        C_Assign["<<component>>\nAssignment Management Service"]
+        C_Resolve["<<component>>\nResolution Management Service"]
+        C_Admin["<<component>>\nUser Management Service"]
+        C_Summary["<<component>>\nReporting & Summary Service"]
+    end
+
+    subgraph StorageSubsystem["Persistence Subsystem"]
+        C_DB["<<component>>\nDatabase Service\n(SQLite Engine)"]
+        C_File["<<component>>\nFile Storage Service\n(Local Disk /uploads)"]
+    end
+
+    UIComponents -->|IAuth| C_Auth
+    C1 -->|IComplaintSubmit| C_Complaint
+    C1 -->|IFileUpload| C_File
+    C2 -->|IComplaintReview| C_Complaint
+    C2 -->|IAssign| C_Assign
+    C2 -->|IClose| C_Resolve
+    C3 -->|IAssignedWork| C_Assign
+    C3 -->|IResolve| C_Resolve
+    C4 -->|IUserMgmt| C_Admin
+    C5 -->|ISummary| C_Summary
+
+    C_Complaint -->|IDataAccess| C_DB
+    C_Assign -->|IDataAccess| C_DB
+    C_Resolve -->|IDataAccess| C_DB
+    C_Admin -->|IDataAccess| C_DB
+    C_Summary -->|IDataAccess| C_DB
+    C_Auth -->|IDataAccess| C_DB
