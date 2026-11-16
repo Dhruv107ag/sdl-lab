@@ -26,21 +26,6 @@ export default function LoginPage({ onLoginSuccess }) {
     }
   };
 
-  const handleQuickDemo = async (demoEmail, demoPass) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setError('');
-    setLoading(true);
-    try {
-      const res = await api.login(demoEmail, demoPass);
-      onLoginSuccess(res.user);
-    } catch (err) {
-      setError(err.message || 'Demo login failed.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div style={{
       minHeight: '85vh',
@@ -103,72 +88,6 @@ export default function LoginPage({ onLoginSuccess }) {
               {loading ? 'Authenticating...' : 'Sign In'}
             </button>
           </form>
-
-          {/* Quick Demo Switcher Section for Viva & Examiners */}
-          <div style={{ marginTop: '28px', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '10px'
-            }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>
-                🚀 1-Click Demo Accounts (Viva Examiner Mode)
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => handleQuickDemo('dhruv@lnmiit.ac.in', 'student123')}
-                style={{ justifyContent: 'space-between' }}
-              >
-                <span>🎓 <strong>Student:</strong> Dhruv Agrawal (S101)</span>
-                <span style={{ color: '#2563eb', fontWeight: 700 }}>Quick Login &rarr;</span>
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => handleQuickDemo('warden.sharma@lnmiit.ac.in', 'warden123')}
-                style={{ justifyContent: 'space-between' }}
-              >
-                <span>🛡️ <strong>Hostel Warden:</strong> Chief Warden Sharma (A12)</span>
-                <span style={{ color: '#2563eb', fontWeight: 700 }}>Quick Login &rarr;</span>
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => handleQuickDemo('ramesh.plumber@lnmiit.ac.in', 'staff123')}
-                style={{ justifyContent: 'space-between' }}
-              >
-                <span>🔧 <strong>Maintenance Staff:</strong> Ramesh Kumar (M07 - Plumbing)</span>
-                <span style={{ color: '#2563eb', fontWeight: 700 }}>Quick Login &rarr;</span>
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => handleQuickDemo('admin@lnmiit.ac.in', 'admin123')}
-                style={{ justifyContent: 'space-between' }}
-              >
-                <span>⚙️ <strong>Administrator:</strong> System Admin (ADM01)</span>
-                <span style={{ color: '#2563eb', fontWeight: 700 }}>Quick Login &rarr;</span>
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => handleQuickDemo('director@lnmiit.ac.in', 'director123')}
-                style={{ justifyContent: 'space-between' }}
-              >
-                <span>📊 <strong>Institute Management:</strong> Director Office (MGT01)</span>
-                <span style={{ color: '#2563eb', fontWeight: 700 }}>Quick Login &rarr;</span>
-              </button>
-            </div>
-          </div>
         </div>
 
       </div>
