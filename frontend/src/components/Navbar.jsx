@@ -16,8 +16,8 @@ export default function Navbar({ user, onLogout }) {
       <div className="nav-brand">
         <span className="nav-logo-badge">HCMS</span>
         <div>
-          <h1 className="nav-title" style={{ fontSize: '16px', margin: 0 }}>Hostel Complaint Management System</h1>
-          <span style={{ fontSize: '11px', color: '#94a3b8' }}>Academic Prototype | Team T042</span>
+          <h1 className="nav-title" style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>Hostel Complaint Management System</h1>
+          <span style={{ fontSize: '11px', color: '#94a3b8' }}>Hostel Care & Maintenance Portal</span>
         </div>
       </div>
 
@@ -33,7 +33,7 @@ export default function Navbar({ user, onLogout }) {
             </button>
           </>
         ) : (
-          <span style={{ fontSize: '13px', color: '#94a3b8' }}>Please Sign In</span>
+          <span style={{ fontSize: '13px', color: '#cbd5e1' }}>Please Sign In</span>
         )}
       </div>
     </header>

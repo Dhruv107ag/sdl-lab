@@ -41,14 +41,14 @@ export default function App() {
 
       <footer style={{
         textAlign: 'center',
-        padding: '20px',
+        padding: '16px 20px',
         fontSize: '12px',
-        color: '#64748b',
-        borderTop: '1px solid #e2e8f0',
-        backgroundColor: '#fff',
+        color: '#6b7280',
+        borderTop: '1px solid #e5e7eb',
+        backgroundColor: '#ffffff',
         marginTop: 'auto'
       }}>
-        Hostel Complaint Management System • CS314 Software Development Lab • Team T042
+        Hostel Complaint Management System • LNMIIT © 2026. All rights reserved.
       </footer>
     </div>
   );

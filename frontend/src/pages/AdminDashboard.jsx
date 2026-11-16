@@ -83,11 +83,11 @@ export default function AdminDashboard({ user }) {
         <div>
           <h2 className="dashboard-title">System Administration & Role Management</h2>
           <p className="dashboard-subtitle">
-            Manage system accounts, allocate roles, and toggle user activation status (UC-002).
+            Manage system accounts, allocate roles, and toggle user activation status.
           </p>
         </div>
         <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
-          ➕ Add New User Account (UC-002)
+          ➕ Add New User Account
         </button>
       </div>
 
@@ -96,7 +96,7 @@ export default function AdminDashboard({ user }) {
 
       <div className="card">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1e293b' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#2d3748' }}>
             Registered Users ({users.length})
           </h3>
           <button className="btn btn-secondary btn-sm" onClick={loadUsers}>
@@ -105,7 +105,7 @@ export default function AdminDashboard({ user }) {
         </div>
 
         {loading ? (
-          <p style={{ color: '#64748b' }}>Loading accounts...</p>
+          <p style={{ color: '#6b7280' }}>Loading accounts...</p>
         ) : (
           <div className="table-responsive">
             <table className="data-table">
@@ -123,12 +123,12 @@ export default function AdminDashboard({ user }) {
               <tbody>
                 {users.map(u => (
                   <tr key={u.user_id}>
-                    <td style={{ fontWeight: 700, color: '#2563eb' }}>{u.user_id}</td>
+                    <td style={{ fontWeight: 600, color: '#4a627a' }}>{u.user_id}</td>
                     <td><strong>{u.name}</strong></td>
                     <td>{u.email}</td>
                     <td>{u.contact_number || 'N/A'}</td>
                     <td>
-                      <span className="role-tag" style={{ backgroundColor: '#334155' }}>
+                      <span className="role-tag" style={{ backgroundColor: '#475467' }}>
                         {u.role}
                       </span>
                     </td>
@@ -139,7 +139,7 @@ export default function AdminDashboard({ user }) {
                     </td>
                     <td>
                       {u.user_id === user.userId ? (
-                        <span style={{ fontSize: '12px', color: '#94a3b8' }}>Current User</span>
+                        <span style={{ fontSize: '12px', color: '#9ca3af' }}>Current User</span>
                       ) : (
                         <button
                           className={`btn btn-sm ${u.account_status === 'Active' ? 'btn-danger' : 'btn-success'}`}
@@ -162,7 +162,7 @@ export default function AdminDashboard({ user }) {
         <div className="modal-backdrop" onClick={() => setShowAddModal(false)}>
           <div className="modal-card" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3 className="modal-title">Create New System Account (UC-002)</h3>
+              <h3 className="modal-title">Create New System Account</h3>
               <button className="btn-close" onClick={() => setShowAddModal(false)}>&times;</button>
             </div>
             <form onSubmit={handleCreateUser}>

@@ -28,23 +28,23 @@ export default function LoginPage({ onLoginSuccess }) {
 
   return (
     <div style={{
-      minHeight: '85vh',
+      minHeight: '80vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '20px'
     }}>
-      <div style={{ maxWidth: '520px', width: '100%' }}>
+      <div style={{ maxWidth: '440px', width: '100%' }}>
         
         {/* Login Card */}
-        <div className="card" style={{ padding: '32px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <span className="nav-logo-badge" style={{ fontSize: '18px', padding: '8px 16px' }}>HCMS</span>
-            <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', marginTop: '14px' }}>
+        <div className="card" style={{ padding: '36px 32px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+            <span className="nav-logo-badge" style={{ fontSize: '16px', padding: '6px 14px' }}>HCMS</span>
+            <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#2d3748', marginTop: '14px' }}>
               Hostel Complaint Management
             </h2>
-            <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>
-              Academic Prototype — Secure Role-Based Authentication
+            <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '4px' }}>
+              Hostel Services & Facility Management Portal
             </p>
           </div>
 
@@ -56,14 +56,15 @@ export default function LoginPage({ onLoginSuccess }) {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="form-label">Email Address</label>
+              <label className="form-label">Institutional Email</label>
               <input
                 type="email"
                 className="form-control"
-                placeholder="e.g., dhruv@lnmiit.ac.in"
+                placeholder="name@lnmiit.ac.in"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoFocus
               />
             </div>
 
@@ -72,7 +73,7 @@ export default function LoginPage({ onLoginSuccess }) {
               <input
                 type="password"
                 className="form-control"
-                placeholder="Enter password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -82,7 +83,7 @@ export default function LoginPage({ onLoginSuccess }) {
             <button
               type="submit"
               className="btn btn-primary"
-              style={{ width: '100%', padding: '12px', marginTop: '8px' }}
+              style={{ width: '100%', padding: '10px 16px', marginTop: '8px' }}
               disabled={loading}
             >
               {loading ? 'Authenticating...' : 'Sign In'}

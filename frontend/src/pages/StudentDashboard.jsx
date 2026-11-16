@@ -121,7 +121,7 @@ export default function StudentDashboard({ user }) {
           className="btn btn-primary"
           onClick={() => setShowSubmitModal(true)}
         >
-          ➕ Submit New Complaint (UC-003)
+          ➕ Submit New Complaint
         </button>
       </div>
 
@@ -136,19 +136,19 @@ export default function StudentDashboard({ user }) {
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Active / In Progress</span>
-          <span className="kpi-value" style={{ color: '#0284c7' }}>{inProgress}</span>
+          <span className="kpi-value" style={{ color: '#355d78' }}>{inProgress}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Resolved / Closed</span>
-          <span className="kpi-value" style={{ color: '#16a34a' }}>{resolved}</span>
+          <span className="kpi-value" style={{ color: '#326242' }}>{resolved}</span>
         </div>
       </div>
 
       {/* Complaints List Table */}
       <div className="card">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1e293b' }}>
-            My Submitted Complaints (Isolated to Your Account)
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#2d3748' }}>
+            My Submitted Complaints
           </h3>
           <button className="btn btn-secondary btn-sm" onClick={loadData}>
             🔄 Refresh List
@@ -156,9 +156,9 @@ export default function StudentDashboard({ user }) {
         </div>
 
         {loading ? (
-          <p style={{ color: '#64748b' }}>Loading complaints...</p>
+          <p style={{ color: '#6b7280' }}>Loading complaints...</p>
         ) : complaints.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
+          <div style={{ textAlign: 'center', padding: '40px 20px', color: '#6b7280' }}>
             <p style={{ fontSize: '16px', fontWeight: 600 }}>No complaints submitted yet.</p>
             <p style={{ fontSize: '13px', marginTop: '6px' }}>
               Click the "Submit New Complaint" button above to report an issue.
@@ -183,17 +183,17 @@ export default function StudentDashboard({ user }) {
               <tbody>
                 {complaints.map(c => (
                   <tr key={c.complaint_id}>
-                    <td style={{ fontWeight: 700, color: '#2563eb' }}>{c.complaint_id}</td>
+                    <td style={{ fontWeight: 600, color: '#4a627a' }}>{c.complaint_id}</td>
                     <td>
                       <strong>{c.title}</strong>
-                      {c.image_url && <span style={{ marginLeft: '6px', fontSize: '11px', color: '#059669' }}>📷 Photo</span>}
+                      {c.image_url && <span style={{ marginLeft: '6px', fontSize: '11px', color: '#3a664e' }}>📷 Photo</span>}
                     </td>
                     <td>{c.category_name}</td>
                     <td>{c.hostel_block}, {c.room_number}</td>
                     <td><PriorityBadge priority={c.priority} /></td>
                     <td><StatusBadge status={c.current_status} /></td>
-                    <td>{c.staff_name || <span style={{ color: '#94a3b8' }}>Unassigned</span>}</td>
-                    <td style={{ fontSize: '12px', color: '#64748b' }}>
+                    <td>{c.staff_name || <span style={{ color: '#9ca3af' }}>Unassigned</span>}</td>
+                    <td style={{ fontSize: '12px', color: '#6b7280' }}>
                       {new Date(c.submission_date_time).toLocaleDateString()}
                     </td>
                     <td>
@@ -212,12 +212,12 @@ export default function StudentDashboard({ user }) {
         )}
       </div>
 
-      {/* Submit Complaint Modal (UC-003) */}
+      {/* Submit Complaint Modal */}
       {showSubmitModal && (
         <div className="modal-backdrop" onClick={() => setShowSubmitModal(false)}>
           <div className="modal-card" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3 className="modal-title">Submit a New Hostel Complaint (UC-003)</h3>
+              <h3 className="modal-title">Submit a New Hostel Complaint</h3>
               <button className="btn-close" onClick={() => setShowSubmitModal(false)}>&times;</button>
             </div>
             <form onSubmit={handleSubmitComplaint}>

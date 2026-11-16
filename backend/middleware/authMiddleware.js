@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'cs314-hostel-prototype-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'hcms-production-jwt-secret-key-2026';
 
 /**
  * Authentication Middleware
