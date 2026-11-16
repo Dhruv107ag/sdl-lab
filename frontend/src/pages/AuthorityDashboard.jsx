@@ -166,19 +166,19 @@ export default function AuthorityDashboard({ user }) {
         </div>
         <div className="kpi-card">
           <span className="kpi-label">New Submitted</span>
-          <span className="kpi-value" style={{ color: '#d97706' }}>{submittedCount}</span>
+          <span className="kpi-value" style={{ color: '#876227' }}>{submittedCount}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Under Review</span>
-          <span className="kpi-value" style={{ color: '#b45309' }}>{underReviewCount}</span>
+          <span className="kpi-value" style={{ color: '#7a551e' }}>{underReviewCount}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Assigned / In Progress</span>
-          <span className="kpi-value" style={{ color: '#2563eb' }}>{assignedCount}</span>
+          <span className="kpi-value" style={{ color: '#3c5472' }}>{assignedCount}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Pending Closure</span>
-          <span className="kpi-value" style={{ color: '#16a34a' }}>{resolvedCount}</span>
+          <span className="kpi-value" style={{ color: '#326242' }}>{resolvedCount}</span>
         </div>
       </div>
 
@@ -192,12 +192,12 @@ export default function AuthorityDashboard({ user }) {
           flexWrap: 'wrap',
           gap: '12px'
         }}>
-          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1e293b' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#2d3748' }}>
             Complaint Management Table
           </h3>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '13px', color: '#64748b', fontWeight: 600 }}>Filter Status:</span>
+            <span style={{ fontSize: '13px', color: '#6b7280', fontWeight: 600 }}>Filter Status:</span>
             <select
               className="form-control"
               style={{ width: 'auto', padding: '6px 12px' }}
@@ -217,9 +217,9 @@ export default function AuthorityDashboard({ user }) {
         </div>
 
         {loading ? (
-          <p style={{ color: '#64748b' }}>Loading records...</p>
+          <p style={{ color: '#6b7280' }}>Loading records...</p>
         ) : filteredComplaints.length === 0 ? (
-          <p style={{ color: '#64748b', padding: '20px 0' }}>No complaints found matching this filter.</p>
+          <p style={{ color: '#6b7280', padding: '20px 0' }}>No complaints found matching this filter.</p>
         ) : (
           <div className="table-responsive">
             <table className="data-table">
@@ -238,19 +238,19 @@ export default function AuthorityDashboard({ user }) {
               <tbody>
                 {filteredComplaints.map(c => (
                   <tr key={c.complaint_id}>
-                    <td style={{ fontWeight: 700, color: '#2563eb' }}>{c.complaint_id}</td>
+                    <td style={{ fontWeight: 600, color: '#4a627a' }}>{c.complaint_id}</td>
                     <td>
                       <div><strong>{c.student_name}</strong></div>
-                      <div style={{ fontSize: '12px', color: '#64748b' }}>{c.hostel_block}, {c.room_number}</div>
+                      <div style={{ fontSize: '12px', color: '#6b7280' }}>{c.hostel_block}, {c.room_number}</div>
                     </td>
                     <td>
                       <strong>{c.title}</strong>
-                      {c.image_url && <span style={{ marginLeft: '6px', fontSize: '11px', color: '#059669' }}>📷 Photo</span>}
+                      {c.image_url && <span style={{ marginLeft: '6px', fontSize: '11px', color: '#3a664e' }}>📷 Photo</span>}
                     </td>
                     <td>{c.category_name}</td>
                     <td><PriorityBadge priority={c.priority} /></td>
                     <td><StatusBadge status={c.current_status} /></td>
-                    <td>{c.staff_name || <span style={{ color: '#94a3b8' }}>Unassigned</span>}</td>
+                    <td>{c.staff_name || <span style={{ color: '#9ca3af' }}>Unassigned</span>}</td>
                     <td>
                       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                         {c.current_status === 'Submitted' && (
@@ -271,7 +271,7 @@ export default function AuthorityDashboard({ user }) {
                               setChosenPriority(c.priority || 'High');
                             }}
                           >
-                            ⚙️ Assign (UC-008)
+                            ⚙️ Assign Staff
                           </button>
                         )}
 
@@ -289,7 +289,7 @@ export default function AuthorityDashboard({ user }) {
                             className="btn btn-success btn-sm"
                             onClick={() => handleCloseComplaint(c.complaint_id)}
                           >
-                            ✅ Close (UC-012)
+                            ✅ Close Ticket
                           </button>
                         )}
 
@@ -309,12 +309,12 @@ export default function AuthorityDashboard({ user }) {
         )}
       </div>
 
-      {/* Assign Maintenance Staff Modal (UC-008) */}
+      {/* Assign Maintenance Staff Modal */}
       {assignTarget && (
         <div className="modal-backdrop" onClick={() => setAssignTarget(null)}>
           <div className="modal-card" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3 className="modal-title">Assign Maintenance Technician (UC-008)</h3>
+              <h3 className="modal-title">Assign Maintenance Technician</h3>
               <button className="btn-close" onClick={() => setAssignTarget(null)}>&times;</button>
             </div>
             <form onSubmit={handleConfirmAssign}>

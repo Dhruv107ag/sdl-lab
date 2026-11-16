@@ -1,32 +1,32 @@
-# Hostel Complaint Management System
-## Software Development Laboratory (CS314) — Academic Prototype
+# Hostel Complaint Management System (HCMS)
 
-**Team ID:** T042  
-**Institute:** The LNM Institute of Information Technology, Jaipur  
-**Team Members:**
-- Dhruv Agrawal (24UCS016)
-- Sanyam Humad (24UCS017)
-- Harshil Agrawal (24UCS018)
-- Akshat Khandal (24UCS019)
+A robust, full-stack web application designed to streamline the logging, triage, technician assignment, progress tracking, resolution, and closure of physical maintenance issues across student residence halls.
 
 ---
 
-## 1. Project Overview
+## 1. Key Features
 
-The **Hostel Complaint Management System** is a full-stack academic software engineering prototype designed to automate the logging, triage, assignment, progress tracking, resolution, and closure of physical maintenance complaints across student residence halls.
-
-The system enforces strict role-based access control (RBAC), end-to-end data validation, relational referential integrity, and atomic transactions across an unbroken 6-stage complaint lifecycle:
-
-$$\text{Submitted} \longrightarrow \text{Under Review} \longrightarrow \text{Assigned} \longrightarrow \text{In Progress} \longrightarrow \text{Resolved} \longrightarrow \text{Closed}$$
+- **Role-Based Access Control (RBAC):** Dedicated, secure dashboards tailored to 5 stakeholder roles:
+  - **Student:** File complaints, upload photographic evidence, track status, view resolution reports, and inspect lifecycle audit history.
+  - **Hostel Warden / Authority:** Triage incoming requests, set priority levels (`Low`, `Medium`, `High`, `Urgent`), assign tasks to specialized maintenance technicians, reject invalid issues with mandatory reasons, and formally close completed tickets.
+  - **Maintenance Staff (Plumber, Electrician, etc.):** View personal work orders, commence work (`In Progress`), post intermediate progress updates, and submit official resolution reports.
+  - **System Administrator:** Manage user accounts, allocate roles, and toggle account activation statuses.
+  - **Institute Management (Director):** High-level executive dashboard showing complaint category distributions, institutional resolution rates, and live maintenance activity streams.
+- **Strict 6-Stage Lifecycle State Machine:**
+  $$\text{Submitted} \longrightarrow \text{Under Review} \longrightarrow \text{Assigned} \longrightarrow \text{In Progress} \longrightarrow \text{Resolved} \longrightarrow \text{Closed}$$
+  *(With alternative branch: $\text{Under Review} \longrightarrow \text{Rejected / Invalid}$)*
+- **Complete Audit Trail:** Every transition, assignment, and status update is permanently timestamped and logged in `complaint_status_history` for accountability.
+- **Secure Authentication:** Industry-standard **JSON Web Tokens (JWT)** and **bcrypt** salted password hashing (cost factor 10).
+- **Photo Attachments:** Upload and preview defect photos with 2MB size cap and strict MIME type validation.
 
 ---
 
 ## 2. Technology Stack & Architecture
 
-- **Presentation Layer (Frontend):** React 19 Single Page Application (SPA) bundled with Vite, styled with responsive Vanilla CSS design system. Includes a floating **Viva Quick Switch** bar for instant evaluator role changes.
-- **API & Routing Layer (Backend):** Node.js runtime with Express 5 REST API, JWT authentication, and Multer for photo attachments.
-- **Data Persistence Layer:** Embedded SQLite relational engine (`better-sqlite3`) utilizing Write-Ahead Logging (`WAL`) mode and enforced foreign key constraints (`PRAGMA foreign_keys = ON;`).
-- **Architecture Paradigm:** Monolithic Layered Architecture (4 tiers: Presentation, API/Security, Domain Logic, SQLite Data Access).
+- **Frontend:** React 19 Single Page Application (SPA), bundled with **Vite**, styled with a clean, low-saturation responsive CSS design system.
+- **Backend:** Node.js with **Express 5** RESTful API services and modular route architecture.
+- **Database:** Embedded relational **SQLite** via `better-sqlite3`, running in high-performance Write-Ahead Logging (`WAL`) mode with enforced foreign key referential integrity (`PRAGMA foreign_keys = ON;`).
+- **File Storage:** Local disk storage engine (`backend/uploads/`) for photographic evidence.
 
 ```text
 +-------------------------------------------------------------------------+
@@ -54,161 +54,175 @@ $$\text{Submitted} \longrightarrow \text{Under Review} \longrightarrow \text{Ass
 +-------------------------------------------------------------------------+
 |            4. DATA ACCESS & STORAGE LAYER (better-sqlite3)              |
 |   Parameterized SQL Statements | Foreign Key Enforcement | Transactions |
-|   complaints.sqlite (Tables: users, categories, complaints, etc.)       |
-|   /uploads (Local static disk directory for complaint photos)          |
+|   backend/database/complaints.sqlite (Tables: users, categories, etc.)   |
+|   backend/uploads (Local static disk directory for complaint photos)    |
 +-------------------------------------------------------------------------+
 ```
 
 ---
 
-## 3. Quick Start & Execution Guide
+## 3. Project Structure
+
+```text
+sdl/
+├── backend/                        # Backend Express application
+│   ├── config/
+│   │   └── database.js             # SQLite connection & WAL mode config
+│   ├── database/
+│   │   ├── schema.sql              # DDL schema definitions (5 tables)
+│   │   ├── seed.js                 # Database seeder with sample accounts
+│   │   └── complaints.sqlite       # Relational SQLite database file
+│   ├── middleware/
+│   │   ├── authMiddleware.js       # JWT extraction and verification
+│   │   ├── roleMiddleware.js       # Role-based access control guards
+│   │   └── uploadMiddleware.js     # Multer image upload filter & limits
+│   ├── routes/
+│   │   ├── adminRoutes.js          # User account creation & status toggling
+│   │   ├── assignmentRoutes.js     # Staff allocation & task assignment
+│   │   ├── authRoutes.js           # Login, me, and logout handlers
+│   │   ├── complaintRoutes.js      # Complaint submission, list & details
+│   │   ├── resolutionRoutes.js     # Start work, progress logs & resolution
+│   │   └── summaryRoutes.js        # Executive KPIs & activity feed
+│   ├── tests/
+│   │   └── api_verification.js     # 20 integration & security test suites
+│   ├── package.json
+│   └── server.js                   # Application entry point & router setup
+│
+├── frontend/                       # Frontend React application
+│   ├── public/                     # Static icons and assets
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── apiClient.js        # Centralized HTTP client & token handling
+│   │   ├── components/
+│   │   │   ├── ComplaintDetailsModal.jsx
+│   │   │   ├── HistoryTimeline.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   └── StatusBadge.jsx
+│   │   ├── pages/
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── AuthorityDashboard.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── ManagementDashboard.jsx
+│   │   │   ├── StaffDashboard.jsx
+│   │   │   └── StudentDashboard.jsx
+│   │   ├── styles/
+│   │   │   └── index.css           # Clean design system & CSS variables
+│   │   ├── App.jsx                 # Role-based routing orchestrator
+│   │   └── main.jsx                # DOM client root
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js              # Vite server & API proxy configuration
+│
+├── run-backend.bat                 # 1-Click launcher for backend server
+├── run-frontend.bat                # 1-Click launcher for frontend client
+├── run-tests.bat                   # 1-Click launcher for automated test suite
+└── README.md                       # Project documentation
+```
+
+---
+
+## 4. Quick Start & Execution Guide
 
 ### Prerequisites
 - **Node.js:** v18.0.0 or higher
 - **npm:** v9.0.0 or higher
 
-### Step 1: Install Dependencies & Initialize Database
-```bash
-# 1. Setup Backend
-cd backend
-npm install
-npm run seed       # Creates schema and seeds demo accounts
+### Option 1: 1-Click Batch Launchers (Windows)
+1. Double-click `run-backend.bat` (Starts backend API on `http://localhost:5000`)
+2. Double-click `run-frontend.bat` (Starts frontend client on `http://localhost:5173`)
+3. Open `http://localhost:5173` in your browser.
 
-# 2. Setup Frontend
-cd ../frontend
-npm install
-```
+---
 
-### Step 2: Run the Application
-Open two terminal windows:
+### Option 2: Terminal Execution
 
-**Terminal 1 (Backend API Server):**
+#### 1. Setup & Run Backend API
 ```bash
 cd backend
-npm start
-# Server listens on http://localhost:5000
-# Health probe available at http://localhost:5000/api/health
+npm install
+npm run seed       # Initializes database schema and pre-populates sample data
+npm start          # Runs server on port 5000
 ```
+*Health probe available at:* `http://localhost:5000/api/health`
 
-**Terminal 2 (Frontend React App):**
+#### 2. Setup & Run Frontend Client
+Open a second terminal window:
 ```bash
 cd frontend
-npm run dev
-# Vite client runs on http://localhost:5173
+npm install
+npm run dev        # Launches Vite development server on port 5173
 ```
+*Access the site at:* `http://localhost:5173`
 
-Navigate your browser to `http://localhost:5173`.
-
----
-
-## 4. Pre-seeded Demo Credentials
-
-For convenience during viva evaluation and demonstrations, the database comes pre-seeded with 7 active accounts covering all 5 user roles:
-
-| Role | Name | Email | Password | Allowed Dashboards & Actions |
-| :--- | :--- | :--- | :--- | :--- |
-| **Student** | Dhruv Agrawal | `dhruv@lnmiit.ac.in` | `student123` | File complaints, track status, view own complaint history. |
-| **Student** | Sanyam Humad | `sanyam@lnmiit.ac.in` | `student123` | Demonstrates cross-student data isolation. |
-| **Hostel Authority** | Warden Dr. Sharma | `warden.sharma@lnmiit.ac.in` | `warden123` | Review complaints, assign technicians, close resolved complaints. |
-| **Hostel Authority** | Caretaker Verma | `caretaker.verma@lnmiit.ac.in`| `warden123` | Secondary hostel caretaker authority. |
-| **Maintenance Staff** | Ramesh Kumar | `ramesh.plumber@lnmiit.ac.in` | `staff123` | Specialization: Plumbing. Start work, log progress, resolve. |
-| **Administrator** | System Admin | `admin@lnmiit.ac.in` | `admin123` | Manage user accounts, view active categories. |
-| **Institute Management**| Director | `director@lnmiit.ac.in` | `director123` | View high-level KPI dashboard, category breakdowns. |
-
-> **Viva Tip:** You can switch between any of these accounts in 1 click using the **Viva Quick Switch** bar at the top of the screen or via the login page chips.
-
----
-
-## 5. Automated Testing & Verification
-
-The backend includes a comprehensive, automated end-to-end integration and security test suite:
-
+#### 3. Run Automated Integration & Security Tests
+Open a third terminal window:
 ```bash
 cd backend
-npm test
-```
-
-### Test Suite Summary:
-- **Total Tests:** 20
-- **Passed:** 20 (100%)
-- **Failed:** 0
-- **Execution Time:** ~4 seconds
-
-```text
- [PASS] TC-HEALTH-01: Health probe reports UP
- [PASS] TC-AUTH-01: Student login returns 200 and token
- [PASS] TC-AUTH-02: Invalid credentials rejected with 401
- [PASS] TC-AUTH-03: /api/auth/me returns student profile
- [PASS] TC-AUTH-04: Authority login succeeds
- [PASS] TC-AUTH-05: Maintenance Staff login succeeds
- [PASS] TC-SUBMIT-01: Student submits valid complaint -> 201 Created
- [PASS] TC-SUBMIT-02: Complaint details fetched with initial history
- [PASS] TC-ISOLATE-01: Student S102 denied access to S101 complaint -> 403 Forbidden
- [PASS] TC-REVIEW-01: Authority transitions status to Under Review
- [PASS] TC-ASSIGN-01: Authority assigns complaint to staff M07 -> 200 OK
- [PASS] TC-WORK-01: Staff marks complaint In Progress
- [PASS] TC-PROG-01: Staff posts work progress remark
- [PASS] TC-SEC-01: Student cannot resolve complaint -> 403 Forbidden
- [PASS] TC-RESOLVE-01: Staff resolves complaint with valid report -> 200 OK
- [PASS] TC-SEC-02: Staff cannot close complaint -> 403 Forbidden
- [PASS] TC-CLOSE-01: Authority formally closes resolved complaint
- [PASS] TC-RULE-01: Closed complaint cannot be reassigned (BR-009) -> 400 Bad Request
- [PASS] TC-ADMIN-01: Administrator retrieves users list -> 200 OK
- [PASS] TC-MGMT-01: Institute Management fetches aggregate KPI counts
+npm test           # Executes 20 automated tests validating auth, RBAC, and workflows
 ```
 
 ---
 
-## 6. Project Documentation Index
+## 5. Sample User Credentials
 
-All required software engineering artifacts across Assignments 1 through 7 are organized as follows:
+The database comes pre-seeded with active accounts across all 5 roles:
 
-### Requirements & Analysis (Assignments 1–5)
-- [SRS-v1.0.md](file:///c:/Users/Hitler/Downloads/sdl/SRS-v1.0.md) — Comprehensive Software Requirements Specification (v1.0).
-- [Scenarios.md](file:///c:/Users/Hitler/Downloads/sdl/Scenarios.md) — Detailed user scenarios for UC-003, UC-006, and UC-008.
-- [Use-Case-Model.md](file:///c:/Users/Hitler/Downloads/sdl/Use-Case-Model.md) — Full use-case model with actor boundaries.
-- [T042-till assn5.pdf](file:///c:/Users/Hitler/Downloads/sdl/T042-till%20assn5.pdf) — Complete consolidated submission for Assignments 1 through 5.
-
-### Software Design Deliverables (Assignments 6 & 7)
-Located in [`docs/design/assignment-06/`](file:///c:/Users/Hitler/Downloads/sdl/docs/design/assignment-06):
-- [Architectural-Design.md](file:///c:/Users/Hitler/Downloads/sdl/docs/design/assignment-06/Architectural-Design.md) — Architectural style, tier boundaries, and subsystem responsibilities.
-- [Data-Class-Design.md](file:///c:/Users/Hitler/Downloads/sdl/docs/design/assignment-06/Data-Class-Design.md) — Software design class model, attribute visibilities, and SQLite relational mapping.
-- [Component-Level-Design.md](file:///c:/Users/Hitler/Downloads/sdl/docs/design/assignment-06/Component-Level-Design.md) — 10 modular software components with explicit interface contracts.
-- [Interface-Design.md](file:///c:/Users/Hitler/Downloads/sdl/docs/design/assignment-06/Interface-Design.md) — Screen specifications and interaction flow for UC-003, UC-008, and UC-011.
-- [Design-Traceability.md](file:///c:/Users/Hitler/Downloads/sdl/docs/design/assignment-06/Design-Traceability.md) — Bidirectional traceability matrix connecting SRS requirements to classes, components, routes, and tests.
-- High-Resolution Rendered Diagrams:
-  - `docs/design/assignment-06/diagrams/Architectural-Diagram.png`
-  - `docs/design/assignment-06/diagrams/Design-Class-Diagram.png`
-  - `docs/design/assignment-06/diagrams/Component-Design-Diagram.png`
-  - `docs/design/assignment-06/diagrams/interfaces/UI-Wireframe-01.png`
-  - `docs/design/assignment-06/diagrams/interfaces/UI-Wireframe-02.png`
-  - `docs/design/assignment-06/diagrams/interfaces/UI-Wireframe-03.png`
-
-### Verification & Viva Readiness
-- [docs/VERIFICATION-REPORT.md](file:///c:/Users/Hitler/Downloads/sdl/docs/VERIFICATION-REPORT.md) — Complete integration audit, RBAC security testing matrix, database integrity verification, and defect log.
-- [docs/VIVA-PREPARATION.md](file:///c:/Users/Hitler/Downloads/sdl/docs/VIVA-PREPARATION.md) — Module-by-module viva notes, live demonstration walkthrough script, and 28 likely viva questions with model answers.
+| Role | Name | Email (Login ID) | Password | Permissions & Capabilities |
+| :--- | :--- | :--- | :--- | :--- |
+| **Student** | Dhruv Agrawal | `dhruv@lnmiit.ac.in` | `student123` | Submit complaints, upload photos, track status, view audit history. |
+| **Student** | Sanyam Humad | `sanyam@lnmiit.ac.in` | `student123` | Submit complaints and monitor resolution status. |
+| **Hostel Authority** | Chief Warden Sharma | `warden.sharma@lnmiit.ac.in` | `warden123` | Triage, set priority, assign technicians, reject invalid tickets, verify and close. |
+| **Maintenance Staff** | Ramesh Kumar (Plumber) | `ramesh.plumber@lnmiit.ac.in` | `staff123` | View assigned plumbing jobs, update progress, submit resolution reports. |
+| **Maintenance Staff** | Suresh Sharma (Electrician) | `suresh.electric@lnmiit.ac.in` | `staff123` | View and resolve assigned electrical issues. |
+| **Administrator** | System Admin | `admin@lnmiit.ac.in` | `admin123` | Manage accounts, create users, toggle activation status. |
+| **Institute Management** | Director Office | `director@lnmiit.ac.in` | `director123` | Real-time facility metrics, category distributions, resolution rates. |
 
 ---
 
-## 7. Step-by-Step Live Demonstration Walkthrough
+## 6. REST API Endpoints Summary
 
-During your presentation, follow this 6-step walkthrough:
+### Authentication (`/api/auth`)
+- `POST /api/auth/login` — Authenticate using email and password; returns signed JWT and user profile.
+- `GET /api/auth/me` — Retrieve the currently authenticated user's profile.
+- `POST /api/auth/logout` — Terminate user session.
 
-1. **System Health & Test Suite:** Run `npm test` in `backend/` to prove all 20 automated tests pass. Show the health probe endpoint at `http://localhost:5000/api/health`.
-2. **Student Submission (UC-003):** Login as **Dhruv Agrawal** (`dhruv@lnmiit.ac.in`). Submit a new plumbing complaint with block, room number, description, and optional photo. Notice status is `Submitted`.
-3. **Authority Triage & Assignment (UC-006 & UC-008):** Switch to **Warden Dr. Sharma**. Review the complaint, set priority to `High`, and assign technician **Ramesh Kumar (Plumber)**. Notice status transitions to `Assigned`.
-4. **Technician Progress & Resolution (UC-010 & UC-011):** Switch to **Ramesh Kumar**. Click `Start Work` (`In Progress`), post intermediate progress remarks, and then submit a formal resolution report. Status transitions to `Resolved`.
-5. **Authority Final Inspection & Closure (UC-012):** Switch back to **Warden Dr. Sharma**. Inspect the technician's resolution and click `Verify & Close`. Status transitions to `Closed` (immutable). Open `View History` to display the unbroken 6-stage audit trail.
-6. **Executive KPI Oversight (UC-016):** Switch to **Director** (`director@lnmiit.ac.in`) to view real-time metrics, charts, category distributions, and facility resolution statistics.
+### Complaints (`/api/complaints`)
+- `GET /api/complaints` — Retrieve complaints matching user scope (Student: own complaints; Staff: assigned jobs; Authority: all complaints).
+- `POST /api/complaints` — Submit a new complaint (supports `multipart/form-data` with photo upload).
+- `GET /api/complaints/categories` — List active maintenance categories.
+- `GET /api/complaints/:id` — Retrieve full complaint details, photo URL, and chronological audit history.
+- `PATCH /api/complaints/:id/review` — Transition complaint status from `Submitted` to `Under Review`.
+- `POST /api/complaints/:id/reject` — Reject an invalid complaint with a mandatory reason.
+
+### Assignments (`/api/assignments`)
+- `POST /api/assignments` — Assign complaint to an active technician with priority level and instructions.
+- `GET /api/assignments/staff` — List active maintenance personnel with trade specializations.
+
+### Resolutions (`/api/resolutions`)
+- `POST /api/resolutions/start-work` — Technician flags assigned work as `In Progress`.
+- `POST /api/resolutions/progress` — Record intermediate work remarks without altering status.
+- `POST /api/resolutions/resolve` — Submit final resolution report and transition ticket to `Resolved`.
+- `POST /api/resolutions/close` — Authority inspects work, confirms satisfaction, and permanently marks as `Closed`.
+
+### Admin & Summary (`/api/admin`, `/api/summary`)
+- `GET /api/admin/users` — Administrator lists all system users.
+- `POST /api/admin/users` — Administrator registers a new user with bcrypt-hashed credentials.
+- `PATCH /api/admin/users/:id/status` — Toggle user account between `Active` and `Inactive`.
+- `GET /api/summary/kpis` — Aggregate counts, category distribution percentages, and recent system activity.
 
 ---
 
-## 8. Honest Disclosures of Prototype Limitations
+## 7. Automated Testing Suite
 
-In accordance with academic standards, the following prototype boundaries are disclosed:
-1. **Notifications:** Email/SMS notifications are logged in the database audit table (`complaint_status_history`) and displayed as visual alert badges in the UI; external SMTP/Twilio gateway transmission is omitted.
-2. **Automated Escalation Timer:** Overdue complaints must be manually flagged by the Hostel Authority; background cron escalation is not active in this development build.
-3. **Local Storage:** Uploaded image attachments are stored in the local server directory `backend/uploads/` rather than a cloud bucket (e.g., AWS S3).
-4. **Database Engine:** SQLite was chosen for zero-dependency local portability. A high-concurrency enterprise deployment would use PostgreSQL with connection pooling.
-#   s d l - l a b  
- 
+The repository includes an automated integration and security test suite in `backend/tests/api_verification.js`. Run with `npm test` in the `backend` directory.
+
+### Verified Test Suites (20 Test Cases)
+1. **Health & Database Probe:** Checks SQLite connectivity, WAL mode, and foreign keys.
+2. **Authentication & Session Security:** Verifies login tokens, invalid credential rejection, and inactive account blocking.
+3. **Complaint Submission & Validation:** Verifies title/description length constraints, category selection, and transaction safety.
+4. **Authority Review & Triage:** Tests status transitions to `Under Review` and rejection with mandatory rationale.
+5. **Technician Assignment:** Tests valid assignment, trade matching, and rejection of assignment to inactive accounts.
+6. **Task Resolution Flow:** Tests start work, progress notes, and final resolution validation (minimum 10 characters).
+7. **Authority Closure:** Tests formal closure by authorities and verifies tickets cannot be modified once closed.
+8. **RBAC Isolation & Security:** Verifies students cannot access authority endpoints (HTTP 403) and students cannot inspect peer complaints (`TC-ISOLATE-01`).
+9. **Management KPI Verification:** Verifies summary counts and distribution mathematics.
