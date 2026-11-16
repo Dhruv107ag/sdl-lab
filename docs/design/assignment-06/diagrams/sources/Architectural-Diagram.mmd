@@ -1,0 +1,43 @@
+flowchart TB
+    subgraph ClientLayer["Presentation Layer (Client - React SPA)"]
+        direction LR
+        UI_Student["Student UI\n(Dashboard, Submit Form, History)"]
+        UI_Auth["Hostel Authority UI\n(Review, Prioritize, Assign, Close)"]
+        UI_Staff["Maintenance Staff UI\n(Assigned Tasks, Progress, Resolve)"]
+        UI_Admin["Administrator UI\n(User Management & Roles)"]
+        UI_Mgmt["Management UI\n(Executive Summary Metrics)"]
+    end
+
+    subgraph APILayer["API & Routing Layer (Express.js)"]
+        direction TB
+        AuthMid["Authentication & Role-Based Access Guard Middleware"]
+        UploadMid["Multer File Upload Validator (Images only, max 2MB)"]
+        Routes["Express REST API Endpoints\n(/api/auth, /api/complaints, /api/assignments, /api/resolutions, /api/admin, /api/summary)"]
+    end
+
+    subgraph ServiceLayer["Business Logic & Service Layer"]
+        direction LR
+        AuthService["Authentication\nService"]
+        ComplaintService["Complaint\nManagement Service"]
+        AssignService["Assignment\nService"]
+        ResolutionService["Resolution\nService"]
+        HistoryService["Status History\nAudit Service"]
+    end
+
+    subgraph DataAccessLayer["Data Access & Persistence Layer (SQLite)"]
+        direction TB
+        DB_Adapter["Database Access Layer\n(Parameterized SQL & ACID Transactions)"]
+        subgraph PersistentStorage["Persistent Storage"]
+            SQLiteDB[(SQLite Database\ndatabase.sqlite)]
+            LocalStorage[(Local File Storage\n/uploads)]
+        end
+    end
+
+    ClientLayer -->|HTTP / JSON REST API| APILayer
+    APILayer --> AuthMid
+    AuthMid --> Routes
+    UploadMid --> Routes
+    Routes --> ServiceLayer
+    ServiceLayer --> DB_Adapter
+    DB_Adapter --> SQLiteDB
+    UploadMid --> LocalStorage

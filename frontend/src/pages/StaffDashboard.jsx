@@ -134,28 +134,28 @@ export default function StaffDashboard({ user }) {
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Needs Start</span>
-          <span className="kpi-value" style={{ color: '#876227' }}>{assignedNew}</span>
+          <span className="kpi-value" style={{ color: '#d97706' }}>{assignedNew}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">In Progress</span>
-          <span className="kpi-value" style={{ color: '#355d78' }}>{inProgress}</span>
+          <span className="kpi-value" style={{ color: '#0284c7' }}>{inProgress}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Completed / Resolved</span>
-          <span className="kpi-value" style={{ color: '#326242' }}>{resolved}</span>
+          <span className="kpi-value" style={{ color: '#16a34a' }}>{resolved}</span>
         </div>
       </div>
 
       {/* Assigned Tasks Table */}
       <div className="card">
-        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#2d3748', marginBottom: '16px' }}>
-          My Assigned Work Orders
+        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1e293b', marginBottom: '16px' }}>
+          My Assigned Work Orders (Isolated to Staff ID {user.userId})
         </h3>
 
         {loading ? (
-          <p style={{ color: '#6b7280' }}>Loading work orders...</p>
+          <p style={{ color: '#64748b' }}>Loading work orders...</p>
         ) : complaints.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px 20px', color: '#6b7280' }}>
+          <div style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
             <p style={{ fontSize: '16px', fontWeight: 600 }}>No tasks currently assigned to you.</p>
             <p style={{ fontSize: '13px', marginTop: '6px' }}>
               Check back when hostel authorities allocate new maintenance tasks.
@@ -179,14 +179,14 @@ export default function StaffDashboard({ user }) {
               <tbody>
                 {complaints.map(c => (
                   <tr key={c.complaint_id}>
-                    <td style={{ fontWeight: 600, color: '#4a627a' }}>{c.complaint_id}</td>
+                    <td style={{ fontWeight: 700, color: '#2563eb' }}>{c.complaint_id}</td>
                     <td>
                       <div><strong>{c.hostel_block}</strong></div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>Room {c.room_number}</div>
+                      <div style={{ fontSize: '12px', color: '#64748b' }}>Room {c.room_number}</div>
                     </td>
                     <td>
                       <strong>{c.title}</strong>
-                      {c.image_url && <span style={{ marginLeft: '6px', fontSize: '11px', color: '#3a664e' }}>📷 Photo</span>}
+                      {c.image_url && <span style={{ marginLeft: '6px', fontSize: '11px', color: '#059669' }}>📷 Photo</span>}
                     </td>
                     <td>{c.category_name}</td>
                     <td><PriorityBadge priority={c.priority} /></td>
@@ -209,13 +209,13 @@ export default function StaffDashboard({ user }) {
                               className="btn btn-secondary btn-sm"
                               onClick={() => setProgressTarget(c)}
                             >
-                              📝 Log Progress
+                              📝 Remark (UC-010)
                             </button>
                             <button
                               className="btn btn-success btn-sm"
                               onClick={() => setResolveTarget(c)}
                             >
-                              ✅ Resolve
+                              ✅ Resolve (UC-011)
                             </button>
                           </>
                         )}
@@ -236,12 +236,12 @@ export default function StaffDashboard({ user }) {
         )}
       </div>
 
-      {/* Intermediate Progress Log Modal */}
+      {/* Intermediate Progress Log Modal (UC-010) */}
       {progressTarget && (
         <div className="modal-backdrop" onClick={() => setProgressTarget(null)}>
           <div className="modal-card" onClick={e => e.stopPropagation()} style={{ maxWidth: '520px' }}>
             <div className="modal-header">
-              <h3 className="modal-title">Log Work Progress Update</h3>
+              <h3 className="modal-title">Log Work Progress Update (UC-010)</h3>
               <button className="btn-close" onClick={() => setProgressTarget(null)}>&times;</button>
             </div>
             <form onSubmit={handleConfirmProgress}>
@@ -274,12 +274,12 @@ export default function StaffDashboard({ user }) {
         </div>
       )}
 
-      {/* Resolution Details Modal */}
+      {/* Resolution Details Modal (UC-011) */}
       {resolveTarget && (
         <div className="modal-backdrop" onClick={() => setResolveTarget(null)}>
           <div className="modal-card" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3 className="modal-title">Record Resolution Details</h3>
+              <h3 className="modal-title">Record Resolution Details (UC-011)</h3>
               <button className="btn-close" onClick={() => setResolveTarget(null)}>&times;</button>
             </div>
             <form onSubmit={handleConfirmResolve}>
@@ -318,7 +318,7 @@ export default function StaffDashboard({ user }) {
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-success" disabled={resolving}>
-                  {resolving ? 'Submitting...' : 'Mark Issue as Resolved'}
+                  {resolving ? 'Submitting...' : 'Mark Issue as Resolved (UC-011)'}
                 </button>
               </div>
             </form>

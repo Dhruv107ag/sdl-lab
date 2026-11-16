@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HCMS - Software Design Modelling Viva Guide (Assignments 6 & 7)</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 18mm 16mm;
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      color: #64748b;
+    }
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    line-height: 1.5;
+    font-size: 10pt;
+    margin: 0;
+    padding: 0;
+  }
+  .header-box {
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+  .institute-title {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+  .course-subtitle {
+    font-size: 10pt;
+    color: #475569;
+    margin: 2px 0 6px 0;
+  }
+  .doc-title {
+    font-size: 18pt;
+    font-weight: 800;
+    color: #1e3a8a;
+    margin: 6px 0 8px 0;
+  }
+  .meta-grid {
+    display: flex;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 8.5pt;
+  }
+  .meta-col {
+    flex: 1;
+  }
+  .meta-col strong {
+    color: #0f172a;
+  }
+  h2 {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #1e3a8a;
+    border-left: 4px solid #2563eb;
+    padding-left: 8px;
+    margin: 22px 0 10px 0;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 14px 0 6px 0;
+    page-break-after: avoid;
+  }
+  .qa-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    page-break-inside: avoid;
+  }
+  .question {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 10pt;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+  }
+  .q-badge {
+    background: #1e3a8a;
+    color: white;
+    font-size: 7.5pt;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 8px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .answer {
+    color: #334155;
+    font-size: 9.5pt;
+    line-height: 1.5;
+  }
+  .answer p {
+    margin: 4px 0 6px 0;
+  }
+  .answer ul, .answer ol {
+    margin: 4px 0 6px 0;
+    padding-left: 20px;
+  }
+  .answer li {
+    margin-bottom: 3px;
+  }
+  table.comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    margin: 8px 0 12px 0;
+    page-break-inside: avoid;
+  }
+  table.comp-table th {
+    background-color: #1e293b;
+    color: #ffffff;
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid #1e293b;
+  }
+  table.comp-table td {
+    padding: 6px 8px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+  }
+  table.comp-table tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  .code-block {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 8pt;
+    padding: 8px 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 6px 0;
+    line-height: 1.4;
+  }
+  .highlight-box {
+    background: #eff6ff;
+    border-left: 3px solid #3b82f6;
+    padding: 8px 10px;
+    font-size: 9pt;
+    border-radius: 0 4px 4px 0;
+    margin: 6px 0;
+  }
+  .badge-tag {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #334155;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 7.5pt;
+    font-family: monospace;
+    font-weight: 600;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+  .diagram-diff-banner {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+  }
+  .diagram-diff-banner h3 {
+    color: #60a5fa;
+    margin: 0 0 4px 0;
+    font-size: 11pt;
+  }
+  .diagram-diff-banner p {
+    margin: 0;
+    font-size: 9pt;
+    color: #e2e8f0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-box">
+  <div class="institute-title">The LNM Institute of Information Technology, Jaipur</div>
+  <div class="course-subtitle">Department of Computer Science & Engineering | CS314: Software Development Laboratory</div>
+  <div class="doc-title">Comprehensive Viva Voce Master Guide (Assignments 6 & 7)</div>
+  <div style="font-size: 10pt; font-weight: 600; color: #334155;">Software Design Modelling: Class, Architectural, Interface & Component-Level Design</div>
+</div>
+
+<div class="meta-grid">
+  <div class="meta-col">
+    <strong>Project:</strong> Hostel Complaint Management System (HCMS)<br>
+    <strong>Team ID:</strong> T042 | <strong>Batch:</strong> 2024-2028 (Y24)
+  </div>
+  <div class="meta-col">
+    <strong>Team Members:</strong><br>
+    Dhruv Agrawal (24UCS016) &bull; Sanyam Humad (24UCS017)<br>
+    Harshil Agrawal (24UCS018) &bull; Akshat Khandal (24UCS019)
+  </div>
+  <div class="meta-col">
+    <strong>Target Use Cases:</strong><br>
+    &bull; UC-003: Submit Complaint<br>
+    &bull; UC-008: Assign Complaint<br>
+    &bull; UC-011: Resolve Complaint & Feedback
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 1: CRITICAL UML DIAGRAM COMPARISONS (TEACHER'S FAVORITE QUESTIONS) -->
+<!-- ========================================================================= -->
+
+<h2>1. Crucial UML Diagram Comparisons (Frequently Asked by Examiners)</h2>
+
+<div class="diagram-diff-banner">
+  <h3>Examiner Focus: Why do we have multiple UML diagrams, and how do they differ?</h3>
+  <p>Examiners routinely ask students to compare pairs of diagrams to test if they understand the distinction between <em>analysis</em> vs. <em>design</em>, <em>static structure</em> vs. <em>dynamic behavior</em>, and <em>logical modules</em> vs. <em>physical deployable components</em>.</p>
+</div>
+
+<!-- Comparison 1 -->
+<div class="qa-card">
+  <div class="question"><span class="q-badge">DIFF 1</span> Analysis Class Diagram vs. Design Class Diagram (Assignment 6 Core Requirement)</div>
+  <div class="answer">
+    <p><strong>Assignment Context:</strong> Task 1 explicitly warns: <em>"Do not simply reproduce the analysis class diagram from Assignment 4. Refine it by adding implementation-oriented details while maintaining consistency."</em></p>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">Dimension</th>
+          <th style="width: 40%;">Analysis Class Diagram (Assignment 4)</th>
+          <th style="width: 40%;">Design Class Diagram (Assignment 6)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Objective</strong></td>
+          <td>Capture problem-domain vocabulary and business concepts without software bias.</td>
+          <td>Specify the exact implementation blueprint for developers and database engineers.</td>
+        </tr>
+        <tr>
+          <td><strong>Abstraction Level</strong></td>
+          <td>Conceptual / Domain level (BCE: Boundary, Control, Entity analysis stereotypes).</td>
+          <td>Implementation / Code level (Controllers, Services, Repositories, Entities, DTOs).</td>
+        </tr>
+        <tr>
+          <td><strong>Attributes</strong></td>
+          <td>Plain domain names (e.g., <code>description</code>, <code>status</code>); types are generic or omitted.</td>
+          <td>Fully typed with language types (e.g., <code>- description: string</code>, <code>- status: ComplaintStatus</code>, <code>- id: UUID</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>Visibility & Encapsulation</strong></td>
+          <td>No visibility markers shown (all concepts are public domain concepts).</td>
+          <td>Strict UML visibility notation: <code>-</code> (private attributes), <code>+</code> (public APIs), <code>#</code> (protected), <code>~</code> (package).</td>
+        </tr>
+        <tr>
+          <td><strong>Operations / Methods</strong></td>
+          <td>High-level responsibilities (e.g., <code>verify()</code>, <code>notify()</code>), no parameter types or return types.</td>
+          <td>Complete method signatures with parameter lists, data types, return types, and exceptions (e.g., <code>+ assignStaff(staffId: int, sla: int): boolean</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>Relationships</strong></td>
+          <td>Pure semantic associations (e.g., "Student files Complaint").</td>
+          <td>Directional navigability arrows, foreign key references, collection types (e.g., <code>List&lt;AuditLog&gt;</code>), aggregation, and composition diamonds.</td>
+        </tr>
+        <tr>
+          <td><strong>Infrastructure / Persistence</strong></td>
+          <td>Storage-agnostic. No knowledge of relational DB, caching, or network protocols.</td>
+          <td>Relational table mapping (primary keys, foreign keys, constraints), connection pools, and ORM/DAO patterns.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <strong>Viva Punchline:</strong> "Analysis Class Diagram answers <em>WHAT</em> domain entities exist in the hostel complaint world; Design Class Diagram answers <em>HOW</em> those classes are structured, typed, encapsulated, and wired together to run in code."
+    </div>
+  </div>
+</div>
+
+<!-- Comparison 2 -->
+<div class="qa-card">
+  <div class="question"><span class="q-badge">DIFF 2</span> Collaboration (Communication) Diagram vs. Sequence Diagram</div>
+  <div class="answer">
+    <p>Both are UML <strong>Interaction Diagrams</strong> and are semantically isomorphic (you can convert one to the other without loss of information), but they emphasize completely different perspectives of object behavior.</p>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">Dimension</th>
+          <th style="width: 40%;">Collaboration / Communication Diagram</th>
+          <th style="width: 40%;">Sequence Diagram</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Primary Emphasis</strong></td>
+          <td><strong>Spatial Organization & Object Links:</strong> Emphasizes structural topology and which objects talk to which objects.</td>
+          <td><strong>Chronological Time Sequence:</strong> Emphasizes the exact order and timing of messages along vertical lifelines.</td>
+        </tr>
+        <tr>
+          <td><strong>Visual Layout</strong></td>
+          <td>Graph network layout: Objects are rectangles connected by association lines (links).</td>
+          <td>2D grid layout: Objects horizontally across the top; vertical lifelines representing time moving downwards.</td>
+        </tr>
+        <tr>
+          <td><strong>Message Ordering</strong></td>
+          <td>Hierarchical decimal numbering on arrows along links (e.g., <code>1: submit()</code>, <code>1.1: validate()</code>, <code>1.2: save()</code>, <code>2: notify()</code>).</td>
+          <td>Implicit top-to-bottom vertical progression of horizontal arrows between lifelines.</td>
+        </tr>
+        <tr>
+          <td><strong>Object Lifetimes</strong></td>
+          <td>Object lifespans, activation focus bars, and destruction (<code>&times;</code>) are difficult to visualize.</td>
+          <td>Clearly shown with vertical activation bars (focus of control) and explicit destruction markers.</td>
+        </tr>
+        <tr>
+          <td><strong>Best Used For</strong></td>
+          <td>Evaluating object coupling, clustering of responsibilities, and architectural collaboration in a subsystem.</td>
+          <td>Complex procedural logic, multi-step asynchronous flows, timeout/retry branches, and detailed timing analysis.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <strong>Viva Punchline:</strong> "Sequence diagrams highlight <em>WHEN</em> messages flow over time; Collaboration diagrams highlight <em>WHO</em> connects to whom in space with numbered message tags."
+    </div>
+  </div>
+</div>
+
+<!-- Comparison 3 -->
+<div class="qa-card">
+  <div class="question"><span class="q-badge">DIFF 3</span> Collaboration Diagram vs. Class Diagram (Teacher WhatsApp Question!)</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">Dimension</th>
+          <th style="width: 40%;">Class Diagram (Static Model)</th>
+          <th style="width: 40%;">Collaboration Diagram (Dynamic Model)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Model Type</strong></td>
+          <td><strong>Static Structural Model:</strong> Shows the permanent structural skeleton of the system.</td>
+          <td><strong>Dynamic Behavioral Model:</strong> Shows runtime interaction for a specific use case scenario.</td>
+        </tr>
+        <tr>
+          <td><strong>Represented Elements</strong></td>
+          <td>Class descriptors (types/blueprints), their attributes, methods, and generalized relationships.</td>
+          <td>Specific runtime object instances (e.g., <code>student: Student</code>, <code>c101: Complaint</code>) and active links.</td>
+        </tr>
+        <tr>
+          <td><strong>Time & Messages</strong></td>
+          <td>No messages, no time sequence, no execution flow. Only declarations of available operations.</td>
+          <td>Numbered method calls passed across links during runtime execution of a particular transaction.</td>
+        </tr>
+        <tr>
+          <td><strong>Lifetime Scope</strong></td>
+          <td>Valid for the entire lifetime and compilation of the software system.</td>
+          <td>Valid only during the transient execution of one specific scenario (e.g., filing a complaint).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Comparison 4 -->
+<div class="qa-card">
+  <div class="question"><span class="q-badge">DIFF 4</span> Component Diagram vs. Architectural / Package Diagram</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">Dimension</th>
+          <th style="width: 40%;">Package / Architectural Diagram</th>
+          <th style="width: 40%;">Component Diagram</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>Logical organization of classes, source code namespaces, and high-level architectural layers.</td>
+          <td>Physical, replaceable, autonomous units of modular execution and software deployment.</td>
+        </tr>
+        <tr>
+          <td><strong>Key UML Notations</strong></td>
+          <td>Folder tabs (packages) with dependency dashed arrows showing compilation or import dependencies.</td>
+          <td>Component rectangles with tab icons, provided interfaces (lollipops <code>&ndash;&cir;</code>), and required interfaces (sockets <code>&ndash;(</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>Replaceability</strong></td>
+          <td>Packages organize code; you cannot simply swap a package without recompilation.</td>
+          <td>Components are black-box replaceable units conforming strictly to declared interface contracts.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Comparison 5 -->
+<div class="qa-card">
+  <div class="question"><span class="q-badge">DIFF 5</span> State Machine Diagram vs. Activity Diagram</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">Dimension</th>
+          <th style="width: 40%;">State Machine Diagram (Statechart)</th>
+          <th style="width: 40%;">Activity Diagram</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Focal Subject</strong></td>
+          <td><strong>Entity-Centric:</strong> Tracks the lifecycle and status transitions of a <em>single object</em> (e.g., <code>Complaint</code>).</td>
+          <td><strong>Process/Workflow-Centric:</strong> Tracks multi-step business logic and data flow across <em>multiple actors</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>Node Meaning</strong></td>
+          <td>Nodes represent <strong>States</strong> (passive conditions where an object waits for an event, e.g., <code>SUBMITTED</code>, <code>ASSIGNED</code>).</td>
+          <td>Nodes represent <strong>Actions/Activities</strong> (active execution of operations, e.g., <code>Validate Form</code>, <code>Send Email</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>Transition Trigger</strong></td>
+          <td>Transitions occur when an <em>external event occurs</em> and a guard condition is satisfied (<code>event [guard] / action</code>).</td>
+          <td>Transitions occur automatically upon completion of the preceding activity (flow of control).</td>
+        </tr>
+        <tr>
+          <td><strong>Concurrency Notations</strong></td>
+          <td>Orthogonal composite states (concurrent sub-states of an entity).</td>
+          <td>Fork and Join bars representing concurrent execution threads and synchronization.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 2: TASK 1 - DATA & CLASS DESIGN VIVA Q&A -->
+<!-- ========================================================================= -->
+
+<div class="page-break"></div>
+<h2>2. Task 1: Data & Class Design Viva Questions & Answers</h2>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q1.1</span> What are the UML visibility specifiers, and why are attributes made private in design classes?</div>
+  <div class="answer">
+    <p>UML defines four visibility specifiers:</p>
+    <ul>
+      <li><code>+</code> <strong>Public:</strong> Accessible by any class anywhere in the system.</li>
+      <li><code>-</code> <strong>Private:</strong> Accessible only within the declaring class itself.</li>
+      <li><code>#</code> <strong>Protected:</strong> Accessible within the declaring class and its subclasses (generalization).</li>
+      <li><code>~</code> <strong>Package / Default:</strong> Accessible by classes within the same package/module namespace.</li>
+    </ul>
+    <p><strong>Rationale for Private Attributes:</strong> Design classes strictly enforce <strong>Encapsulation</strong> and <strong>Information Hiding</strong> (David Parnas). If attributes like <code>complaint.status</code> were public, external controllers could arbitrarily mutate a complaint from <code>SUBMITTED</code> directly to <code>RESOLVED</code>, violating business invariants and skipping mandatory SLA and staff assignment rules. Private fields force all mutations through public validated operations (e.g., <code>complaint.assignStaff(...)</code>).</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q1.2</span> Explain Association, Aggregation, and Composition with concrete examples and multiplicities from HCMS.</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Relationship</th>
+          <th>UML Symbol & Definition</th>
+          <th>HCMS Concrete Example</th>
+          <th>Multiplicity & Lifecycle Rule</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Association</strong></td>
+          <td>Solid line with optional navigability arrow.<br>A general structural connection between two independent classes.</td>
+          <td><code>Student</code> &harr; <code>Complaint</code></td>
+          <td><code>Student (1) &mdash;&mdash;&mdash; (0..*) Complaint</code><br>A student can lodge zero or many complaints; each complaint is lodged by exactly one student. Both exist independently.</td>
+        </tr>
+        <tr>
+          <td><strong>Aggregation</strong></td>
+          <td>Hollow diamond at container end.<br>Weak "has-a" relationship. Part can exist without the whole; shared ownership.</td>
+          <td><code>Hostel</code> &diamondsuit;&mdash;&mdash;&gt; <code>MaintenanceStaff</code></td>
+          <td><code>Hostel (1..*) &diamondsuit;&mdash;&mdash;&mdash; (1..*) Staff</code><br>Staff members belong to a hostel roster, but if a hostel wing closes, the staff members still exist in the university institute.</td>
+        </tr>
+        <tr>
+          <td><strong>Composition</strong></td>
+          <td>Solid filled diamond at container end.<br>Strong "part-of" relationship. Part has coincident lifecycle with whole; non-shareable.</td>
+          <td><code>Complaint</code> &blacklozenge;&mdash;&mdash;&gt; <code>AuditLogEntry</code><br><code>Complaint</code> &blacklozenge;&mdash;&mdash;&gt; <code>ComplaintAttachment</code></td>
+          <td><code>Complaint (1) &blacklozenge;&mdash;&mdash;&mdash; (1..*) AuditLog</code><br>An audit log entry records state changes of that specific complaint. If the complaint record is purged, its audit logs and attachment records are cascadingly deleted.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q1.3</span> How is the User Generalization hierarchy structured in HCMS, and how is it persisted in relational SQLite?</div>
+  <div class="answer">
+    <p><strong>UML Generalization Hierarchy:</strong> An abstract base class <code>User</code> contains common attributes: <code>id: UUID</code>, <code>name: string</code>, <code>email: string</code>, <code>passwordHash: string</code>, <code>role: UserRole</code>, <code>phone: string</code>, <code>createdAt: timestamp</code>.</p>
+    <p>Specialized subclasses inherit from <code>User</code>:</p>
+    <ul>
+      <li><code>Student</code> adds: <code>rollNo: string</code>, <code>hostelBlock: string</code>, <code>roomNo: string</code>.</li>
+      <li><code>HostelWardenAuthority</code> adds: <code>hostelAssigned: string</code>, <code>officeRoom: string</code>.</li>
+      <li><code>MaintenanceStaff</code> adds: <code>category: SkillType</code> (Electrical, Plumbing, Carpentry), <code>activeTasksCount: int</code>, <code>isAvailable: boolean</code>.</li>
+      <li><code>Administrator</code> adds: <code>adminLevel: int</code>.</li>
+    </ul>
+    <p><strong>Relational Database Mapping Strategy:</strong> Relational databases do not have native inheritance. We utilize <strong>Single Table Inheritance (STI)</strong> with nullable specialized columns and a discriminator column (<code>role</code>):</p>
+    <div class="code-block">CREATE TABLE users (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT CHECK(role IN ('STUDENT','WARDEN','STAFF','ADMIN')) NOT NULL,
+    phone TEXT,
+    roll_no TEXT,             -- NULL for non-students
+    hostel_block TEXT,        -- Used for students and wardens
+    room_no TEXT,             -- NULL for staff/warden
+    staff_category TEXT,      -- NULL for non-staff
+    is_available INTEGER DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);</div>
+    <p><em>Why STI?</em> Avoids expensive SQL <code>JOIN</code> operations on high-frequency login and token validation queries while ensuring single-point constraint validation.</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q1.4</span> How are multiplicities enforced in the Design Class Model and the SQLite database?</div>
+  <div class="answer">
+    <ul>
+      <li><code>1..1</code> Mandatory Single Association: Enforced in SQLite using <code>NOT NULL</code> on foreign key (e.g., <code>student_id TEXT NOT NULL REFERENCES users(id)</code>).</li>
+      <li><code>0..1</code> Optional Association: Enforced via nullable foreign key column (e.g., <code>assigned_staff_id TEXT REFERENCES users(id)</code>, which is <code>NULL</code> when complaint status is <code>SUBMITTED</code>).</li>
+      <li><code>1..*</code> Mandatory Collection: Enforced in application business logic within transactional boundaries (e.g., creating a complaint automatically inserts the initial <code>AuditLogEntry</code> with status <code>SUBMITTED</code> in the same database transaction).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 3: TASK 2 - ARCHITECTURAL DESIGN VIVA Q&A -->
+<!-- ========================================================================= -->
+
+<div class="page-break"></div>
+<h2>3. Task 2: Architectural Design Viva Questions & Answers</h2>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q2.1</span> Which architectural style is chosen for HCMS, and what is the technical justification?</div>
+  <div class="answer">
+    <p><strong>Selected Style:</strong> <strong>4-Layered Modular Monolith (Layered Architecture Style)</strong> structured into:</p>
+    <ol>
+      <li><strong>Presentation Layer:</strong> React SPA (Vite) providing responsive UI components, client-side routing, and local state management.</li>
+      <li><strong>Routing & Security Layer:</strong> Express.js routing middleware, JWT authentication, and Role-Based Access Control (RBAC).</li>
+      <li><strong>Domain / Business Logic Layer:</strong> Core services implementing complaint lifecycle state machines, staff dispatching algorithms, and SLA breach calculations.</li>
+      <li><strong>Data Access & Persistence Layer:</strong> SQLite relational storage with connection pooling, transaction wrappers, and prepared SQL statements.</li>
+    </ol>
+    <p><strong>Justification:</strong></p>
+    <ul>
+      <li><em>Strict Separation of Concerns:</em> UI components do not query the database directly; business validation rules are decoupled from HTTP transport.</li>
+      <li><em>Campus Scale Suitability:</em> For a university campus of ~5,000 students and ~100 staff, a modular monolith handles the workload on a single modest server instance with sub-50ms response times.</li>
+      <li><em>ACID Transactional Guarantees:</em> Updating a complaint status, reassigning staff, and writing an audit log requires atomic multi-table transactions, which are simple and robust in a single relational database.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q2.2</span> Why NOT Microservices? What architectural trade-offs were considered?</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Evaluation Factor</th>
+          <th>Modular Monolith (Chosen)</th>
+          <th>Microservices Architecture (Rejected)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Deployment Complexity</strong></td>
+          <td>Single deployable artifact; single Node.js runtime.</td>
+          <td>Requires Docker containers, Kubernetes/orchestrator, service discovery, API gateways.</td>
+        </tr>
+        <tr>
+          <td><strong>Data Consistency</strong></td>
+          <td>Atomic ACID transactions within SQLite.</td>
+          <td>Distributed transactions, eventual consistency, complex two-phase commit or Saga patterns.</td>
+        </tr>
+        <tr>
+          <td><strong>Network Latency</strong></td>
+          <td>In-memory function calls between layers (~0.01 ms).</td>
+          <td>Inter-service HTTP/gRPC network hops and serialized JSON payloads (~10-50 ms).</td>
+        </tr>
+        <tr>
+          <td><strong>Failure Modes</strong></td>
+          <td>Simple stack traces and centralized error logger.</td>
+          <td>Cascading service failures, partial outages, distributed tracing overhead (Jaeger/Zipkin).</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <strong>Viva Punchline:</strong> "Microservices solve organizational scaling problems for teams of hundreds of engineers. For HCMS, it introduces distributed systems fallacies without any tangible performance benefit."
+    </div>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q2.3</span> How does SQLite handle concurrency when multiple students submit complaints simultaneously?</div>
+  <div class="answer">
+    <p>SQLite is often challenged in viva regarding concurrency. Here is the exact technical explanation:</p>
+    <ul>
+      <li><strong>WAL Mode (Write-Ahead Logging):</strong> We configure SQLite with <code>PRAGMA journal_mode = WAL;</code>. In WAL mode, <em>readers do not block writers, and writers do not block readers</em>. Multiple students can read complaints concurrently while a write occurs.</li>
+      <li><strong>Node.js Single-Threaded Event Loop:</strong> Node.js processes HTTP requests asynchronously on a single event loop. When writing to SQLite via <code>better-sqlite3</code>, writes execute synchronously in microsecond bursts (~0.5 ms per insert).</li>
+      <li><strong>Busy Timeout:</strong> SQLite is configured with <code>PRAGMA busy_timeout = 5000;</code>, ensuring that if two transactions attempt to commit at the exact same millisecond, the second transaction automatically retries for up to 5 seconds rather than throwing a lock error.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 4: TASK 3 - INTERFACE DESIGN VIVA Q&A -->
+<!-- ========================================================================= -->
+
+<div class="page-break"></div>
+<h2>4. Task 3: Interface Design Viva Questions & Answers (Assignment 7)</h2>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q3.1</span> What is the difference between User Interface (UI) Design and Software Interface Design?</div>
+  <div class="answer">
+    <ul>
+      <li><strong>User Interface (UI) Design:</strong> The human-computer boundary. Focuses on visual affordance, ergonomics, wireframes, input validation messages, readability, and user flows (e.g., student filling a complaint lodging form).</li>
+      <li><strong>Software Interface Design:</strong> The machine-machine or component-component boundary. Focuses on programmatic contracts, REST API endpoint schemas, data transfer formats (JSON), HTTP status codes, method signatures, and exception specifications.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q3.2</span> Walk through the UI Wireframe and ergonomics for the 3 target use cases.</div>
+  <div class="answer">
+    <ol>
+      <li><strong>UC-003: Submit Complaint (Student Interface):</strong>
+        <ul>
+          <li><em>Inputs:</em> Category dropdown (Electrical, Plumbing, Carpentry, Sanitation), Urgency selector (Normal, Urgent), Title input, Description text area, Room Number (auto-populated from student profile with override option), Photo file upload.</li>
+          <li><em>Controls:</em> "Submit Complaint" primary button, "Reset" secondary button.</li>
+          <li><em>Feedback:</em> Real-time client-side character count, file size validator (&le;5MB), loading spinner, and success banner showing generated Complaint Ticket ID (e.g., <code>CMP-2026-042</code>).</li>
+        </ul>
+      </li>
+      <li><strong>UC-008: Assign Complaint (Warden Authority Interface):</strong>
+        <ul>
+          <li><em>Inputs & Filters:</em> Filterable triage list showing unassigned complaints ordered by submission time; Staff availability dropdown showing current active task count per worker (e.g., "Ramesh Kumar (Plumber) - 2 active tasks"); Priority override selector; SLA target selector (e.g., 6 hours, 24 hours, 48 hours).</li>
+          <li><em>Controls:</em> "Confirm Assignment" button with confirmation modal.</li>
+          <li><em>Feedback:</em> Instant badge update from <code>SUBMITTED</code> to <code>ASSIGNED</code> and notification dispatch toast.</li>
+        </ul>
+      </li>
+      <li><strong>UC-011: Resolve Complaint & Feedback (Staff & Student Interface):</strong>
+        <ul>
+          <li><em>Staff View:</em> Work order card with "Mark In Progress", "Add Resolution Remarks" text area, "Parts Replaced" fields, and "Mark Resolved" button.</li>
+          <li><em>Student View:</em> Verification modal prompting for OTP / Satisfaction confirmation, 1-to-5 star rating selector, and feedback comments text area.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q3.3</span> Detail the Software Interface (REST API) contracts for the 3 selected use cases.</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Use Case</th>
+          <th>HTTP Method & Endpoint</th>
+          <th>Request Payload (JSON)</th>
+          <th>Response & Status Codes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>UC-003</strong><br>Submit Complaint</td>
+          <td><code>POST /api/complaints</code><br><em>Auth: Bearer JWT (Student)</em></td>
+          <td><pre style="margin:0; font-size:7.5pt;">{
+  "category": "PLUMBING",
+  "title": "Water leakage in bathroom",
+  "description": "Tap leaking continuously in Room 204",
+  "room_no": "204",
+  "hostel_block": "BH-1",
+  "urgency": "HIGH"
+}</pre></td>
+          <td><strong>201 Created:</strong> Returns created complaint object with ID and timestamp.<br><strong>400 Bad Request:</strong> Missing fields.<br><strong>401 Unauthorized:</strong> Missing/invalid token.</td>
+        </tr>
+        <tr>
+          <td><strong>UC-008</strong><br>Assign Complaint</td>
+          <td><code>PATCH /api/complaints/:id/assign</code><br><em>Auth: Bearer JWT (Warden)</em></td>
+          <td><pre style="margin:0; font-size:7.5pt;">{
+  "staff_id": "usr-staff-003",
+  "priority": "HIGH",
+  "sla_hours": 12,
+  "remarks": "Check main pipe washer"
+}</pre></td>
+          <td><strong>200 OK:</strong> Updated complaint record with status <code>ASSIGNED</code>.<br><strong>403 Forbidden:</strong> Non-warden actor.<br><strong>409 Conflict:</strong> Complaint already assigned.</td>
+        </tr>
+        <tr>
+          <td><strong>UC-011</strong><br>Resolve Complaint</td>
+          <td><code>PATCH /api/complaints/:id/resolve</code><br><em>Auth: Bearer JWT (Staff)</em></td>
+          <td><pre style="margin:0; font-size:7.5pt;">{
+  "resolution_notes": "Replaced faulty washer in tap.",
+  "parts_replaced": "1/2 inch rubber washer",
+  "verification_otp": "7492"
+}</pre></td>
+          <td><strong>200 OK:</strong> Updated complaint record with status <code>RESOLVED</code>.<br><strong>422 Unprocessable:</strong> Invalid status transition.<br><strong>401 Unauthorized:</strong> Wrong staff ID.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 5: TASK 4 - COMPONENT-LEVEL DESIGN VIVA Q&A -->
+<!-- ========================================================================= -->
+
+<div class="page-break"></div>
+<h2>5. Task 4: Component-Level Design Viva Questions & Answers</h2>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q4.1</span> What is a Software Component, and what are Provided vs. Required Interfaces?</div>
+  <div class="answer">
+    <p>A <strong>Software Component</strong> is a modular, deployable, and replaceable part of a software system that encapsulates its implementation details and exposes behavior exclusively through declared interfaces.</p>
+    <ul>
+      <li><strong>Provided Interface (Lollipop notation <code>&ndash;&cir;</code>):</strong> The services, APIs, and operations that the component <em>implements and offers</em> to external clients (e.g., <code>IComplaintManagement</code> provides <code>submitComplaint()</code>, <code>getComplaintById()</code>).</li>
+      <li><strong>Required Interface (Socket notation <code>&ndash;(</code>):</strong> The services and dependencies that the component <em>must consume</em> from other components to fulfill its duties (e.g., <code>ComplaintComponent</code> requires <code>INotificationService</code> to send emails and <code>IDataAccess</code> to query SQLite).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q4.2</span> Show the Component Mapping to physical code files in your HCMS project.</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Logical Component</th>
+          <th>Physical Code Files (Implementation)</th>
+          <th>Provided Interface</th>
+          <th>Required Interface</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AuthenticationComponent</strong></td>
+          <td><code>backend/controllers/authController.js</code><br><code>backend/middleware/auth.js</code></td>
+          <td><code>IAuthService</code> (login, verifyToken)</td>
+          <td><code>IDataAccess</code></td>
+        </tr>
+        <tr>
+          <td><strong>ComplaintCoreComponent</strong></td>
+          <td><code>backend/controllers/complaintController.js</code><br><code>backend/services/complaintService.js</code></td>
+          <td><code>IComplaintOperations</code> (submit, update, track)</td>
+          <td><code>IDataAccess</code>, <code>IStaffDispatch</code>, <code>IAuditService</code></td>
+        </tr>
+        <tr>
+          <td><strong>StaffDispatchComponent</strong></td>
+          <td><code>backend/controllers/staffController.js</code><br><code>backend/services/staffService.js</code></td>
+          <td><code>IStaffDispatch</code> (assignTask, getWorkload)</td>
+          <td><code>IDataAccess</code></td>
+        </tr>
+        <tr>
+          <td><strong>DataPersistenceComponent</strong></td>
+          <td><code>backend/db/database.js</code></td>
+          <td><code>IDataAccess</code> (query, runTransaction)</td>
+          <td>SQLite Engine / File System</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q4.3</span> Present the Detailed Internal Processing Logic / Pseudocode for the 3 Operations.</div>
+  <div class="answer">
+    <p><strong>Operation 1 (UC-003): <code>submitComplaint(studentId, payload)</code></strong></p>
+    <div class="code-block">ALGORITHM submitComplaint(studentId, payload):
+1.  VALIDATE payload fields (category IN CategoryEnum, title NOT EMPTY, room_no VALID)
+    IF validation fails THEN RETURN ErrorResponse(400, "Validation Error: " + errors)
+2.  VERIFY studentId exists in User Repository AND role == 'STUDENT'
+    IF not found THEN RETURN ErrorResponse(401, "Unauthorized Student")
+3.  CHECK FOR SPAM / DUPLICATE:
+    recent = DB.query("SELECT id FROM complaints WHERE student_id = ? AND title = ? AND status != 'CLOSED' AND created_at > NOW() - 10 MIN", studentId, payload.title)
+    IF recent exists THEN RETURN ErrorResponse(409, "Duplicate complaint already filed recently")
+4.  BEGIN TRANSACTION:
+    newId = generateUUID()
+    slaHours = calculateDefaultSLA(payload.category, payload.urgency)
+    DB.execute("INSERT INTO complaints (id, student_id, category, title, description, room_no, hostel_block, urgency, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'SUBMITTED', CURRENT_TIMESTAMP)", ...)
+    DB.execute("INSERT INTO audit_logs (id, complaint_id, actor_id, action, old_status, new_status) VALUES (?, ?, ?, 'SUBMIT', NULL, 'SUBMITTED')", ...)
+    COMMIT TRANSACTION
+5.  DISPATCH async notification event: NotificationService.notifyWardens(hostelBlock, newId)
+6.  RETURN SuccessResponse(201, { complaint_id: newId, status: 'SUBMITTED', sla_hours: slaHours })</div>
+
+    <p><strong>Operation 2 (UC-008): <code>assignComplaint(complaintId, staffId, wardenId, slaHours)</code></strong></p>
+    <div class="code-block">ALGORITHM assignComplaint(complaintId, staffId, wardenId, slaHours):
+1.  VERIFY wardenId has role 'WARDEN' AND complaint belongs to warden's assigned hostel block
+2.  complaint = DB.query("SELECT * FROM complaints WHERE id = ?", complaintId)
+    IF NOT complaint THEN RETURN ErrorResponse(404, "Complaint not found")
+    GUARD: IF complaint.status != 'SUBMITTED' AND complaint.status != 'ESCALATED' THEN
+        RETURN ErrorResponse(422, "Cannot assign complaint in state: " + complaint.status)
+3.  staff = DB.query("SELECT * FROM users WHERE id = ? AND role = 'STAFF'", staffId)
+    IF NOT staff OR NOT staff.is_available THEN RETURN ErrorResponse(400, "Staff member unavailable")
+    IF staff.active_tasks >= 5 THEN RETURN ErrorResponse(409, "Staff workload threshold reached")
+4.  BEGIN TRANSACTION:
+    slaDeadline = NOW() + slaHours * 3600
+    DB.execute("UPDATE complaints SET assigned_staff_id = ?, status = 'ASSIGNED', sla_deadline = ? WHERE id = ?", staffId, slaDeadline, complaintId)
+    DB.execute("UPDATE users SET active_tasks = active_tasks + 1 WHERE id = ?", staffId)
+    DB.execute("INSERT INTO audit_logs VALUES (generateUUID(), ?, ?, 'ASSIGN_STAFF', 'SUBMITTED', 'ASSIGNED')", complaintId, wardenId)
+    COMMIT TRANSACTION
+5.  NotificationService.notifyStaff(staffId, complaintId)
+6.  RETURN SuccessResponse(200, { complaint_id: complaintId, status: 'ASSIGNED', staff: staff.name })</div>
+
+    <p><strong>Operation 3 (UC-011): <code>resolveComplaint(complaintId, staffId, notes, verificationOtp)</code></strong></p>
+    <div class="code-block">ALGORITHM resolveComplaint(complaintId, staffId, notes, verificationOtp):
+1.  complaint = DB.query("SELECT * FROM complaints WHERE id = ?", complaintId)
+    IF NOT complaint THEN RETURN ErrorResponse(404, "Complaint not found")
+    GUARD: IF complaint.assigned_staff_id != staffId THEN RETURN ErrorResponse(403, "Not assigned to this task")
+    GUARD: IF complaint.status != 'ASSIGNED' AND complaint.status != 'IN_PROGRESS' THEN
+        RETURN ErrorResponse(422, "Invalid state transition from " + complaint.status)
+2.  IF verificationOtp != complaint.otp THEN RETURN ErrorResponse(400, "Invalid Student Verification OTP")
+3.  BEGIN TRANSACTION:
+    DB.execute("UPDATE complaints SET status = 'RESOLVED', resolution_notes = ?, resolved_at = CURRENT_TIMESTAMP WHERE id = ?", notes, complaintId)
+    DB.execute("UPDATE users SET active_tasks = MAX(0, active_tasks - 1) WHERE id = ?", staffId)
+    DB.execute("INSERT INTO audit_logs VALUES (generateUUID(), ?, ?, 'RESOLVE', complaint.status, 'RESOLVED')", complaintId, staffId)
+    COMMIT TRANSACTION
+4.  NotificationService.notifyStudentForFeedback(complaint.student_id, complaintId)
+5.  RETURN SuccessResponse(200, { complaint_id: complaintId, status: 'RESOLVED' })</div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 6: TASK 5 - CONSISTENCY & TRACEABILITY VIVA Q&A -->
+<!-- ========================================================================= -->
+
+<div class="page-break"></div>
+<h2>6. Task 5: Design Consistency & Traceability Viva Questions & Answers</h2>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q5.1</span> Walk the examiner through the complete Traceability Pipeline from SRS to Code.</div>
+  <div class="answer">
+    <p>The entire development sequence forms an unbreakable, verifiable traceability pipeline:</p>
+    <ol>
+      <li><strong>SRS (Software Requirements Specification):</strong> Identifies Functional Requirements (e.g., <code>FR-012: The system shall allow students to lodge hostel maintenance complaints</code>).</li>
+      <li><strong>Use Case Model (Assignment 2):</strong> Groups functional requirements into formal Use Cases with boundaries and actors (e.g., <code>UC-003: Submit Complaint</code>).</li>
+      <li><strong>Scenarios & Activity Diagrams (Assignment 3):</strong> Models primary sunny-day workflows and exceptional branches (e.g., invalid input, duplicate complaint).</li>
+      <li><strong>Analysis Class Model (Assignment 4):</strong> Identifies problem-domain BCE objects (e.g., <code>ComplaintFormUI</code>, <code>ComplaintController</code>, <code>ComplaintRecord</code>).</li>
+      <li><strong>Collaboration & State Models (Assignment 5):</strong> Models dynamic object messaging and entity lifecycle states (<code>SUBMITTED &rarr; ASSIGNED &rarr; IN_PROGRESS &rarr; RESOLVED &rarr; CLOSED</code>).</li>
+      <li><strong>Design Class Model (Assignment 6, Task 1):</strong> Refines analysis classes into implementation types with private attributes, method signatures, return types, and SQLite foreign key constraints.</li>
+      <li><strong>Architectural Design (Assignment 6, Task 2):</strong> Partitions classes into 4 architectural layers (Presentation, Routing/Security, Domain Logic, Data Access).</li>
+      <li><strong>Interface Design (Assignment 7, Task 3):</strong> Details screen wireframes and REST API endpoints (<code>POST /api/complaints</code>).</li>
+      <li><strong>Component-Level Design (Assignment 7, Task 4):</strong> Defines component internal algorithms, preconditions, postconditions, and error handling pseudocode.</li>
+      <li><strong>Source Code & Test Cases:</strong> Implements the exact controllers, services, database tables, and automated unit tests.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q5.2</span> What is Requirements Impact Analysis, and how does your design prevent regression?</div>
+  <div class="answer">
+    <p><strong>Requirements Impact Analysis</strong> is the forward-tracing process executed when a customer requirement changes:</p>
+    <ul>
+      <li><em>Scenario:</em> Suppose the hostel administration introduces a new rule: "Carpentry complaints require prior inspection by the assistant warden before staff assignment."</li>
+      <li><em>Tracing Impact:</em> Trace <code>SRS Rule</code> &rarr; <code>UC-008 (Assign Complaint)</code> &rarr; <code>State Machine</code> (add new state <code>PENDING_INSPECTION</code>) &rarr; <code>Design Class</code> (add <code>assistantWardenId</code> attribute to <code>Complaint</code>) &rarr; <code>REST API</code> (update <code>PATCH /api/complaints/:id/assign</code> validation) &rarr; <code>StaffDispatchComponent</code> (add inspection guard in pseudocode).</li>
+      <li><em>Benefit:</em> Guarantees that modifications do not silently break other components or introduce undocumented behaviors.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 7: EXAMINER CURVEBALL & WHATSAPP VIVA QUESTIONS -->
+<!-- ========================================================================= -->
+
+<div class="page-break"></div>
+<h2>7. Professor Curveball & Real Viva Questions (From WhatsApp & Past Exams)</h2>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.1</span> What is a Guard Condition in UML diagrams? Show how you used it.</div>
+  <div class="answer">
+    <p>A <strong>Guard Condition</strong> is a boolean expression enclosed in square brackets <code>[condition]</code> placed on a transition in a state diagram or an interaction diagram. The transition fires <em>only and only if</em> the guard condition evaluates to <code>TRUE</code> at the exact moment the triggering event occurs.</p>
+    <p><strong>Concrete HCMS Examples:</strong></p>
+    <ul>
+      <li>State Transition Guard: <code>[staff.activeTasks < 5 && staff.isAvailable == true] / assignTask()</code> &mdash; Prevents overloading a maintenance worker.</li>
+      <li>Resolution Guard: <code>[inputOtp == complaint.verificationOtp] / markResolved()</code> &mdash; Ensures worker cannot fake completion without the student's physical OTP verification.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.2</span> What is the System Boundary of HCMS? What is inside vs. outside?</div>
+  <div class="answer">
+    <p>The <strong>System Boundary</strong> defines the exact perimeter of software components developed, deployed, and controlled within the HCMS project.</p>
+    <ul>
+      <li><strong>Inside Boundary:</strong> React frontend SPA, Express API controllers, Authentication middleware, Complaint state machine, Staff assignment logic, SQLite database, and Audit log records.</li>
+      <li><strong>Outside Boundary (External Entities / Actors):</strong> Human users (Student, Warden, Staff, Admin), Campus LDAP/OAuth Authentication Server, Institute SMTP Mail Server, and Campus SMS Gateway.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.3</span> Why must the Class Diagram be created before dynamic diagrams or code?</div>
+  <div class="answer">
+    <p>A dynamic interaction diagram (Sequence or Collaboration) models messages passed between objects. You cannot pass a message or invoke a method on an object unless that object's class has been defined with that specific operation signature and visibility in the <strong>Class Model</strong>. The class model establishes the fundamental <em>structural vocabulary and static contracts</em> without which dynamic behavior has no semantic basis.</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.4</span> Take any two classes, formulate a business rule, and explain the ambiguity if both classes try to enforce it. How do you resolve it? (Teacher WhatsApp Question!)</div>
+  <div class="answer">
+    <p><strong>Selected Classes:</strong> <code>Complaint</code> and <code>MaintenanceStaff</code>.</p>
+    <p><strong>Business Rule:</strong> <em>"A maintenance staff member cannot be assigned more than 5 active complaints concurrently."</em></p>
+    <p><strong>The Ambiguity / Problem:</strong></p>
+    <ul>
+      <li>If <code>Complaint</code> enforces it: <code>complaint.assignTo(staff)</code> checks <code>staff.getActiveCount()</code>. But <code>Complaint</code> should not manage staff workload policies &mdash; doing so increases coupling and leaks staff domain knowledge into the complaint entity.</li>
+      <li>If <code>MaintenanceStaff</code> enforces it: <code>staff.acceptComplaint(complaint)</code> checks <code>this.activeTasks &lt; 5</code>. But what if two wardens assign tasks simultaneously? If both entities contain partial validation, responsibility is fragmented, creating duplication, race conditions, and maintenance nightmares.</li>
+    </ul>
+    <p><strong>Architectural Resolution:</strong> Apply the <strong>GRASP Information Expert</strong> pattern and introduce a Domain Service: <code>StaffAssignmentService</code>. This service queries the staff workload, acquires a lock on the staff record, verifies the invariant (<code>activeTasks &lt; 5</code>), and atomically binds the staff member to the complaint within a single database transaction.</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.5</span> How is Fairness and Anti-Bias guaranteed in HCMS? (Teacher WhatsApp Question!)</div>
+  <div class="answer">
+    <ol>
+      <li><strong>Deterministic FIFO Queueing:</strong> Unassigned complaints of identical priority are strictly ordered by <code>created_at ASC</code>. Wardens cannot arbitrarily favor one room over another.</li>
+      <li><strong>Automated SLA Escalation:</strong> If a normal complaint remains unassigned for &gt;24 hours or in-progress for &gt;48 hours, a background cron daemon automatically escalates the status to <code>ESCALATED</code> and alerts the Chief Warden.</li>
+      <li><strong>Load-Balanced Staff Allocation:</strong> The system automatically highlights the qualified staff member with the lowest current workload (least active tasks) to eliminate favoritism.</li>
+      <li><strong>Tamper-Proof Audit Logging:</strong> Every state change records the actor ID, previous status, new status, and timestamp. Wardens or staff cannot delete complaint histories without detection.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.6</span> How do you validate the institutional email domain in code during login and registration? (Teacher WhatsApp Question!)</div>
+  <div class="answer">
+    <p>We enforce a strict two-stage validation strategy:</p>
+    <p><strong>1. Strict Regex Pattern:</strong></p>
+    <div class="code-block">const LNMIIT_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@lnmiit\.ac\.in$/;
+
+function validateInstitutionalEmail(email) {
+    if (!email || typeof email !== 'string') return false;
+    const cleanEmail = email.trim().toLowerCase();
+    return LNMIIT_EMAIL_REGEX.test(cleanEmail);
+}</div>
+    <p><strong>2. Registration Verification Protocol:</strong></p>
+    <ul>
+      <li>Check database: <code>SELECT id FROM users WHERE email = ?</code> to prevent duplicate registrations.</li>
+      <li>Generate a cryptographically secure random token (<code>crypto.randomBytes(32).toString('hex')</code>) with a 15-minute expiration timestamp.</li>
+      <li>Dispatch an activation link via SMTP. The account remains in <code>is_active = 0</code> status until the student clicks the link and sets their password.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.7</span> If you had only 48 hours to finish this prototype, what core requirements would you keep, and what would you drop?</div>
+  <div class="answer">
+    <p>Apply <strong>MoSCoW Prioritization</strong> to deliver the minimum viable value loop:</p>
+    <ul>
+      <li><strong>Must Have (Retained in 48 hours):</strong> Student login &rarr; Submit Complaint (Text description & room) &rarr; Warden triage & single-click assign &rarr; Staff mark resolved. Basic SQLite tables and JWT authentication.</li>
+      <li><strong>Won't Have / Deferred:</strong> Photo file attachments (high storage/S3 overhead), multi-tier OTP SMS verification, dark mode styling, automated SLA escalation cron jobs, and graphical analytical charts.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.8</span> Compare Software Process Models: Evolutionary Prototyping vs. Throwaway Prototyping. Why Evolutionary?</div>
+  <div class="answer">
+    <ul>
+      <li><strong>Throwaway Prototyping:</strong> A rapid, fragile mock-up (often hardcoded UI) created solely to clarify uncertain requirements, after which the prototype is completely discarded and development begins from scratch.</li>
+      <li><strong>Evolutionary Prototyping (Our Choice):</strong> An initial, well-architected core system is constructed with solid design patterns (clean layers, modular classes). Each sprint refines, hardens, and extends the exact same codebase from prototype into production software.</li>
+      <li><em>Why Evolutionary for HCMS?</em> Our core requirements were already formalized in Assignments 1-5 (SRS baseline). Throwing away code would waste time; evolutionary prototyping allowed our Assignments 6 & 7 design models to directly become the final functioning application.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="question"><span class="q-badge">Q7.9</span> What is the fundamental difference between a Software Feature and a Software Function?</div>
+  <div class="answer">
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width: 25%;">Dimension</th>
+          <th style="width: 37%;">Software Feature</th>
+          <th style="width: 38%;">Software Function</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Definition</strong></td>
+          <td>A user-facing capability or distinguishing characteristic that delivers a specific business value.</td>
+          <td>An internal operation, mathematical transformation, or algorithmic subroutine executing a specific computational task.</td>
+        </tr>
+        <tr>
+          <td><strong>Perspective</strong></td>
+          <td>Stakeholder / Product Manager / User perspective.</td>
+          <td>Developer / Software Engineer / Machine perspective.</td>
+        </tr>
+        <tr>
+          <td><strong>HCMS Example</strong></td>
+          <td><em>"Automated Complaint Escalation & SLA Tracking"</em></td>
+          <td><code>calculateSlaDeadline(category, urgencyTimestamp)</code> or <code>bcrypt.hash(password, 10)</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- SECTION 8: RAPID-FIRE VIVA CHEAT SHEET -->
+<!-- ========================================================================= -->
+
+<div class="page-break"></div>
+<h2>8. Rapid-Fire 2-Minute Viva Voce Cheat Sheet</h2>
+
+<table class="comp-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Term / Acronym</th>
+      <th style="width: 75%;">Rapid Definition & Examiner-Winning Answer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>UML</strong></td>
+      <td>Unified Modeling Language &mdash; standard visual specification language for object-oriented software engineering (OMG standard).</td>
+    </tr>
+    <tr>
+      <td><strong>Analysis vs. Design Class</strong></td>
+      <td>Analysis class = Conceptual domain entity (BCE stereotypes). Design class = Implementation-ready blueprint with types, visibility, and DB mapping.</td>
+    </tr>
+    <tr>
+      <td><strong>GRASP</strong></td>
+      <td>General Responsibility Assignment Software Patterns (Information Expert, Creator, Controller, Low Coupling, High Cohesion).</td>
+    </tr>
+    <tr>
+      <td><strong>SOLID Principles</strong></td>
+      <td>Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion.</td>
+    </tr>
+    <tr>
+      <td><strong>Aggregation vs. Composition</strong></td>
+      <td>Aggregation = Weak "has-a", independent lifecycles (Hostel &diamondsuit;&ndash;&gt; Staff). Composition = Strong "part-of", shared lifecycle (Complaint &blacklozenge;&ndash;&gt; AuditLog).</td>
+    </tr>
+    <tr>
+      <td><strong>Provided vs. Required Interface</strong></td>
+      <td>Provided (Lollipop <code>&ndash;&cir;</code>) = Services a component offers to others. Required (Socket <code>&ndash;(</code>) = Services a component needs from others.</td>
+    </tr>
+    <tr>
+      <td><strong>SQLite WAL Mode</strong></td>
+      <td>Write-Ahead Logging: enables concurrent readers without locking writers; maximizes local throughput.</td>
+    </tr>
+    <tr>
+      <td><strong>Guard Condition</strong></td>
+      <td>Boolean condition <code>[condition]</code> that must evaluate to true before a state transition or message can execute.</td>
+    </tr>
+    <tr>
+      <td><strong>Traceability Matrix</strong></td>
+      <td>A cross-reference table proving every requirement (FR) maps to a Use Case, Class, Component, REST endpoint, and Test Case.</td>
+    </tr>
+    <tr>
+      <td><strong>SLA (Service Level Agreement)</strong></td>
+      <td>Time bound within which a complaint must be resolved (e.g., Electrical Emergency = 4 hours, General Carpentry = 48 hours).</td>
+    </tr>
+  </tbody>
+</table>
+
+<div style="margin-top: 25px; padding: 12px; background: #f1f5f9; border-radius: 6px; text-align: center; font-size: 8.5pt; color: #475569;">
+  <strong>Hostel Complaint Management System (HCMS) &bull; Team T042 &bull; LNMIIT Jaipur</strong><br>
+  Prepared for CS314 Software Development Laboratory Viva Voce Examination
+</div>
+
+</body>
+</html>

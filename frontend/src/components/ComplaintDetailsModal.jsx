@@ -26,51 +26,50 @@ export default function ComplaintDetailsModal({ complaint, history, onClose }) {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
             gap: '12px',
-            backgroundColor: '#f9fafb',
+            backgroundColor: '#f8fafc',
             padding: '14px',
-            borderRadius: '6px',
-            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
             marginBottom: '18px',
             fontSize: '13px'
           }}>
             <div>
-              <span style={{ color: '#6b7280' }}>Current Status:</span>
+              <span style={{ color: '#64748b' }}>Current Status:</span>
               <div style={{ marginTop: '4px' }}><StatusBadge status={complaint.current_status} /></div>
             </div>
             <div>
-              <span style={{ color: '#6b7280' }}>Priority:</span>
+              <span style={{ color: '#64748b' }}>Priority:</span>
               <div style={{ marginTop: '4px' }}><PriorityBadge priority={complaint.priority} /></div>
             </div>
             <div>
-              <span style={{ color: '#6b7280' }}>Category:</span>
+              <span style={{ color: '#64748b' }}>Category:</span>
               <div style={{ fontWeight: 600, marginTop: '4px' }}>{complaint.category_name}</div>
             </div>
             <div>
-              <span style={{ color: '#6b7280' }}>Location:</span>
+              <span style={{ color: '#64748b' }}>Location:</span>
               <div style={{ fontWeight: 600, marginTop: '4px' }}>{complaint.hostel_block}, {complaint.room_number}</div>
             </div>
             <div>
-              <span style={{ color: '#6b7280' }}>Student:</span>
+              <span style={{ color: '#64748b' }}>Student:</span>
               <div style={{ fontWeight: 600, marginTop: '4px' }}>{complaint.student_name}</div>
             </div>
             <div>
-              <span style={{ color: '#6b7280' }}>Assigned Staff:</span>
+              <span style={{ color: '#64748b' }}>Assigned Staff:</span>
               <div style={{ fontWeight: 600, marginTop: '4px' }}>{complaint.staff_name || 'Unassigned'}</div>
             </div>
           </div>
 
           {/* Problem Description */}
           <div style={{ marginBottom: '18px' }}>
-            <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#4b5563', textTransform: 'uppercase', marginBottom: '6px' }}>
+            <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', marginBottom: '6px' }}>
               Problem Description
             </h3>
             <p style={{
               backgroundColor: '#fff',
-              border: '1px solid #e5e7eb',
+              border: '1px solid #e2e8f0',
               padding: '12px',
               borderRadius: '6px',
-              fontSize: '13px',
-              color: '#374151'
+              fontSize: '14px',
+              color: '#1e293b'
             }}>
               {complaint.description}
             </p>
@@ -79,10 +78,10 @@ export default function ComplaintDetailsModal({ complaint, history, onClose }) {
           {/* Image Attachment preview if available */}
           {complaint.image_url && (
             <div style={{ marginBottom: '18px' }}>
-              <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#4b5563', textTransform: 'uppercase', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', marginBottom: '6px' }}>
                 Attached Photographic Evidence
               </h3>
-              <div style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '8px', display: 'inline-block' }}>
+              <div style={{ border: '1px solid #e2e8f0', borderRadius: '6px', padding: '8px', display: 'inline-block' }}>
                 <img
                   src={complaint.image_url}
                   alt="Complaint Evidence"
@@ -104,20 +103,20 @@ export default function ComplaintDetailsModal({ complaint, history, onClose }) {
           {/* Resolution info if resolved or closed */}
           {complaint.resolution_details && (
             <div style={{ marginBottom: '18px' }}>
-              <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#326242', textTransform: 'uppercase', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#166534', textTransform: 'uppercase', marginBottom: '6px' }}>
                 Resolution Report
               </h3>
               <div style={{
-                backgroundColor: '#f0f6f2',
-                border: '1px solid #d3e5d8',
+                backgroundColor: '#f0fdf4',
+                border: '1px solid #bbf7d0',
                 padding: '12px',
                 borderRadius: '6px',
                 fontSize: '13px',
-                color: '#2a5338'
+                color: '#14532d'
               }}>
                 <p><strong>Work Done:</strong> {complaint.resolution_details}</p>
                 {complaint.resolution_date_time && (
-                  <p style={{ fontSize: '12px', marginTop: '4px', color: '#326242' }}>
+                  <p style={{ fontSize: '12px', marginTop: '4px', color: '#166534' }}>
                     Resolved at: {new Date(complaint.resolution_date_time).toLocaleString()}
                   </p>
                 )}
@@ -127,8 +126,8 @@ export default function ComplaintDetailsModal({ complaint, history, onClose }) {
 
           {/* Status History Timeline */}
           <div>
-            <h3 style={{ fontSize: '13px', fontWeight: 600, color: '#4b5563', textTransform: 'uppercase', marginBottom: '6px' }}>
-              Status Lifecycle & History Timeline
+            <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', marginBottom: '6px' }}>
+              Status Lifecycle & History Timeline (Audit Trail)
             </h3>
             <HistoryTimeline history={history} />
           </div>

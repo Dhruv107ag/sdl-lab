@@ -1,0 +1,136 @@
+classDiagram
+    direction TB
+
+    class User {
+        -String userId
+        -String name
+        -String email
+        -String passwordHash
+        -String contactNumber
+        -String role
+        -String accountStatus
+        +login(credentials): SessionToken
+        +logout(): Boolean
+        +updateProfile(details): Boolean
+    }
+
+    class Student {
+        -String studentId
+        +submitComplaint(details, file): Complaint
+        +viewStatus(complaintId): Status
+        +viewOwnComplaints(): List~Complaint~
+        +viewHistory(complaintId): List~History~
+    }
+
+    class HostelWardenAuthority {
+        -String authorityId
+        -String assignedBlock
+        +reviewComplaint(complaintId): Boolean
+        +categorizeComplaint(complaintId, catId): Boolean
+        +prioritizeComplaint(complaintId, priority): Boolean
+        +rejectComplaint(complaintId, reason): Boolean
+        +assignComplaint(complaintId, staffId): ComplaintAssignment
+        +closeComplaint(complaintId): Boolean
+    }
+
+    class MaintenanceStaff {
+        -String staffId
+        -String specialization
+        +viewAssignedComplaints(): List~Complaint~
+        +startWork(complaintId): Boolean
+        +updateProgress(complaintId, remarks): Boolean
+        +recordResolution(complaintId, details): Resolution
+    }
+
+    class Administrator {
+        -String adminId
+        +manageUsers(): List~User~
+        +createDemoUser(userData): User
+        +toggleAccountStatus(userId): Boolean
+    }
+
+    class InstituteManagement {
+        -String managementId
+        +viewExecutiveSummary(): SummaryReport
+        +viewCategoryBreakdown(): Map
+    }
+
+    class Complaint {
+        -String complaintId
+        -String studentId
+        -String categoryId
+        -String title
+        -String description
+        -String hostelBlock
+        -String roomNumber
+        -String priority
+        -String currentStatus
+        -String imageUrl
+        -DateTime submissionDateTime
+        -DateTime closedDateTime
+        +validateComplaint(): Boolean
+        +create(): Complaint
+        +updateStatus(newStatus, actorId, comments): Boolean
+        +retrieveHistory(): List~ComplaintStatusHistory~
+    }
+
+    class ComplaintCategory {
+        -String categoryId
+        -String categoryName
+        -String description
+        -Boolean isActive
+        +validateCategory(): Boolean
+        +checkAvailability(): Boolean
+    }
+
+    class ComplaintAssignment {
+        -String assignmentId
+        -String complaintId
+        -String staffId
+        -String assignedBy
+        -DateTime assignmentDateTime
+        -String assignmentStatus
+        -String remarks
+        +assignStaff(): Boolean
+        +validateAssignment(): Boolean
+        +reassign(newStaffId): Boolean
+    }
+
+    class ComplaintStatusHistory {
+        -String historyId
+        -String complaintId
+        -String previousStatus
+        -String newStatus
+        -String changedBy
+        -DateTime changeDateTime
+        -String comments
+        +recordStatusChange(): Boolean
+        +retrieveHistory(): List~ComplaintStatusHistory~
+    }
+
+    class Resolution {
+        -String resolutionId
+        -String complaintId
+        -String resolutionDetails
+        -String resolvedBy
+        -DateTime resolutionDateTime
+        +validateResolution(): Boolean
+        +recordResolution(): Boolean
+    }
+
+    User <|-- Student : Generalization
+    User <|-- HostelWardenAuthority : Generalization
+    User <|-- MaintenanceStaff : Generalization
+    User <|-- Administrator : Generalization
+    User <|-- InstituteManagement : Generalization
+
+    Student "1" --> "0..*" Complaint : submits
+    ComplaintCategory "1" --> "0..*" Complaint : classifies
+    Complaint "1" *-- "0..*" ComplaintAssignment : contains (Composition)
+    Complaint "1" *-- "0..*" ComplaintStatusHistory : tracks (Composition)
+    Complaint "1" *-- "0..1" Resolution : concludes (Composition)
+
+    MaintenanceStaff "1" --> "0..*" ComplaintAssignment : receives
+    HostelWardenAuthority "1" --> "0..*" ComplaintAssignment : creates
+    User "1" --> "0..*" ComplaintStatusHistory : changedBy
+    User "1" --> "0..*" Resolution : recordedBy

@@ -39,7 +39,7 @@ export default function ManagementDashboard({ user }) {
         <div>
           <h2 className="dashboard-title">Institute Management Executive Dashboard</h2>
           <p className="dashboard-subtitle">
-            Welcome, <strong>{user?.name || 'Director'}</strong>. Executive oversight, resolution statistics, and facility metrics.
+            Welcome, <strong>{user?.name || 'Director'}</strong>. Executive oversight, resolution statistics, and facility metrics (UC-016 / FR-032).
           </p>
         </div>
         <button className="btn btn-secondary btn-sm" onClick={loadKPIs}>
@@ -55,19 +55,19 @@ export default function ManagementDashboard({ user }) {
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Pending Review</span>
-          <span className="kpi-value" style={{ color: '#876227' }}>{kpis.pending}</span>
+          <span className="kpi-value" style={{ color: '#d97706' }}>{kpis.pending}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Active / In Progress</span>
-          <span className="kpi-value" style={{ color: '#355d78' }}>{kpis.assignedOrActive}</span>
+          <span className="kpi-value" style={{ color: '#0284c7' }}>{kpis.assignedOrActive}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Resolved & Closed</span>
-          <span className="kpi-value" style={{ color: '#326242' }}>{kpis.resolved + kpis.closed}</span>
+          <span className="kpi-value" style={{ color: '#16a34a' }}>{kpis.resolved + kpis.closed}</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Resolution Rate</span>
-          <span className="kpi-value" style={{ color: '#5b466f' }}>
+          <span className="kpi-value" style={{ color: '#7c3aed' }}>
             {kpis.total > 0 ? Math.round(((kpis.resolved + kpis.closed) / kpis.total) * 100) : 0}%
           </span>
         </div>
@@ -77,7 +77,7 @@ export default function ManagementDashboard({ user }) {
         
         {/* Category Distribution Card */}
         <div className="card">
-          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#2d3748', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1e293b', marginBottom: '16px' }}>
             Complaints by Maintenance Category
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -87,13 +87,13 @@ export default function ManagementDashboard({ user }) {
                 <div key={idx}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '4px' }}>
                     <span style={{ fontWeight: 600 }}>{item.category_name}</span>
-                    <span style={{ color: '#6b7280' }}>{item.count} issues ({pct}%)</span>
+                    <span style={{ color: '#64748b' }}>{item.count} issues ({pct}%)</span>
                   </div>
-                  <div style={{ height: '8px', backgroundColor: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '8px', backgroundColor: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{
                       height: '100%',
                       width: `${pct}%`,
-                      backgroundColor: '#4a627a',
+                      backgroundColor: '#2563eb',
                       borderRadius: '4px'
                     }} />
                   </div>
@@ -105,7 +105,7 @@ export default function ManagementDashboard({ user }) {
 
         {/* Status Distribution Card */}
         <div className="card">
-          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#2d3748', marginBottom: '16px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1e293b', marginBottom: '16px' }}>
             Lifecycle Status Breakdown
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -115,12 +115,12 @@ export default function ManagementDashboard({ user }) {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '8px 12px',
-                backgroundColor: '#f9fafb',
+                backgroundColor: '#f8fafc',
                 borderRadius: '6px',
                 fontSize: '13px'
               }}>
                 <StatusBadge status={status} />
-                <span style={{ fontWeight: 600, color: '#2d3748' }}>{count} complaints</span>
+                <span style={{ fontWeight: 700, color: '#1e293b' }}>{count} complaints</span>
               </div>
             ))}
           </div>
@@ -130,8 +130,8 @@ export default function ManagementDashboard({ user }) {
 
       {/* Recent System-Wide Activity Log */}
       <div className="card" style={{ marginTop: '20px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#2d3748', marginBottom: '16px' }}>
-          Recent Maintenance Activity Log
+        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1e293b', marginBottom: '16px' }}>
+          Recent Maintenance Activity Log (Real-time Audit Stream)
         </h3>
         <div className="table-responsive">
           <table className="data-table">
@@ -147,10 +147,10 @@ export default function ManagementDashboard({ user }) {
             <tbody>
               {recentActivity.map((act, idx) => (
                 <tr key={idx}>
-                  <td style={{ fontWeight: 600, color: '#4a627a' }}>{act.complaint_id}</td>
+                  <td style={{ fontWeight: 700, color: '#2563eb' }}>{act.complaint_id}</td>
                   <td>
                     <strong>{act.actor_name}</strong>
-                    <div style={{ fontSize: '11px', color: '#6b7280' }}>{act.actor_role}</div>
+                    <div style={{ fontSize: '11px', color: '#64748b' }}>{act.actor_role}</div>
                   </td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

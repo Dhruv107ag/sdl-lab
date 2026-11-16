@@ -3,7 +3,7 @@ import { StatusBadge } from './StatusBadge';
 
 export default function HistoryTimeline({ history }) {
   if (!history || history.length === 0) {
-    return <p style={{ fontSize: '13px', color: '#6b7280' }}>No status changes recorded yet.</p>;
+    return <p style={{ fontSize: '13px', color: '#64748b' }}>No status changes recorded yet.</p>;
   }
 
   const formatTimestamp = (ts) => {
@@ -31,7 +31,7 @@ export default function HistoryTimeline({ history }) {
             <div className="timeline-meta">
               <span>
                 <strong>{item.changed_by_name}</strong>{' '}
-                <span style={{ fontSize: '11px', color: '#6b7280' }}>({item.changed_by_role})</span>
+                <span style={{ fontSize: '11px', color: '#64748b' }}>({item.changed_by_role})</span>
               </span>
               <span>{formatTimestamp(item.change_date_time)}</span>
             </div>
@@ -39,7 +39,7 @@ export default function HistoryTimeline({ history }) {
               {item.previous_status && (
                 <>
                   <StatusBadge status={item.previous_status} />
-                  <span style={{ color: '#9ca3af' }}>&rarr;</span>
+                  <span style={{ color: '#94a3b8' }}>&rarr;</span>
                 </>
               )}
               <StatusBadge status={item.new_status} />
